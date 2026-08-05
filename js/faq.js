@@ -100,7 +100,16 @@ const FaqPage = {
         body: JSON.stringify({ name, email, message }),
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || "failed");
+      if (!res.ok) {
+        this.setMsg(
+          data.error ||
+            (typeof Locale !== "undefined" && Locale.current === "en"
+              ? "Failed to send inquiry."
+              : "문의 발송에 실패했습니다."),
+          "error"
+        );
+        return;
+      }
 
       if (data.sent) {
         this.setMsg(
@@ -111,7 +120,10 @@ const FaqPage = {
         );
         document.getElementById("inquiryForm").reset();
         setTimeout(() => this.closeModal?.(), 1200);
-      } else if (data.mailto) {
+        return;
+      }
+
+      if (data.mailto) {
         window.location.href = data.mailto;
         this.setMsg(
           typeof Locale !== "undefined" && Locale.current === "en"
@@ -120,11 +132,22 @@ const FaqPage = {
           "ok"
         );
         setTimeout(() => this.closeModal?.(), 800);
-      } else {
-        this.openMailto(name, email, message);
+        return;
       }
+
+      this.setMsg(
+        typeof Locale !== "undefined" && Locale.current === "en"
+          ? "Failed to send inquiry."
+          : "문의 발송에 실패했습니다.",
+        "error"
+      );
     } catch {
-      this.openMailto(name, email, message);
+      this.setMsg(
+        typeof Locale !== "undefined" && Locale.current === "en"
+          ? "Failed to send inquiry."
+          : "문의 발송에 실패했습니다. 잠시 후 다시 시도해 주세요.",
+        "error"
+      );
     } finally {
       submitBtn.disabled = false;
     }

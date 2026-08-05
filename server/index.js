@@ -120,32 +120,42 @@ app.post(
 
     const subject = `[CMC 문의] ${name}`;
     const body = `이름: ${name}\n회신 받을 메일: ${email}\n\n${message}`;
+    const smtpUser = String(process.env.SMTP_USER || "").trim();
+    const smtpPass = String(process.env.SMTP_PASS || "").replace(/\s+/g, "");
 
-    if (process.env.SMTP_USER && process.env.SMTP_PASS) {
-      try {
-        const nodemailer = require("nodemailer");
-        const transporter = nodemailer.createTransport({
-          service: "gmail",
-          auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS,
-          },
-        });
-        await transporter.sendMail({
-          from: process.env.SMTP_USER,
-          to: INQUIRY_TO,
-          replyTo: email,
-          subject,
-          text: body,
-        });
-        return res.json({ ok: true, sent: true });
-      } catch (err) {
-        console.error("[inquiry] SMTP send failed", err);
-      }
+    if (!smtpUser || !smtpPass) {
+      const mailto = `mailto:${INQUIRY_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      return res.json({ ok: true, sent: false, mailto });
     }
 
-    const mailto = `mailto:${INQUIRY_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    res.json({ ok: true, sent: false, mailto });
+    try {
+      const nodemailer = require("nodemailer");
+      const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+          user: smtpUser,
+          pass: smtpPass,
+        },
+      });
+      await transporter.sendMail({
+        from: `"CMC SEOUL" <${smtpUser}>`,
+        to: INQUIRY_TO,
+        replyTo: email,
+        subject,
+        text: body,
+      });
+      return res.json({ ok: true, sent: true });
+    } catch (err) {
+      console.error("[inquiry] SMTP send failed", err);
+      return res.status(502).json({
+        ok: false,
+        error:
+          "메일 발송에 실패했습니다. Gmail 앱 비밀번호(SMTP_PASS) 설정을 확인해 주세요.",
+        detail: err?.response || err?.message || "SMTP error",
+      });
+    }
   })
 );
 
