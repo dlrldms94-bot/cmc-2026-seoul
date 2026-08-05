@@ -119,43 +119,72 @@ app.post(
     }
 
     const subject = `[CMC 문의] ${name}`;
-    const body = `이름: ${name}\n회신 받을 메일: ${email}\n\n${message}`;
+    const textBody = `이름: ${name}\n회신 받을 메일: ${email}\n\n${message}`;
+
+    // Prefer HTTPS email relay (Render often blocks outbound SMTP ports).
+    try {
+      const formRes = await fetch(
+        `https://formsubmit.co/ajax/${encodeURIComponent(INQUIRY_TO)}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            message: textBody,
+            _subject: subject,
+            _replyto: email,
+            _template: "table",
+            _captcha: "false",
+          }),
+        }
+      );
+      const formData = await formRes.json().catch(() => ({}));
+      if (formRes.ok) {
+        return res.json({
+          ok: true,
+          sent: true,
+          provider: "formsubmit",
+          note: formData?.success || null,
+        });
+      }
+      console.error("[inquiry] FormSubmit failed", formRes.status, formData);
+    } catch (err) {
+      console.error("[inquiry] FormSubmit request error", err);
+    }
+
     const smtpUser = String(process.env.SMTP_USER || "").trim();
     const smtpPass = String(process.env.SMTP_PASS || "").replace(/\s+/g, "");
-
-    if (!smtpUser || !smtpPass) {
-      const mailto = `mailto:${INQUIRY_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      return res.json({ ok: true, sent: false, mailto });
+    if (smtpUser && smtpPass) {
+      try {
+        const nodemailer = require("nodemailer");
+        const transporter = nodemailer.createTransport({
+          host: "smtp.gmail.com",
+          port: 465,
+          secure: true,
+          auth: { user: smtpUser, pass: smtpPass },
+        });
+        await transporter.sendMail({
+          from: `"CMC SEOUL" <${smtpUser}>`,
+          to: INQUIRY_TO,
+          replyTo: email,
+          subject,
+          text: textBody,
+        });
+        return res.json({ ok: true, sent: true, provider: "smtp" });
+      } catch (err) {
+        console.error("[inquiry] SMTP send failed", err);
+      }
     }
 
-    try {
-      const nodemailer = require("nodemailer");
-      const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: {
-          user: smtpUser,
-          pass: smtpPass,
-        },
-      });
-      await transporter.sendMail({
-        from: `"CMC SEOUL" <${smtpUser}>`,
-        to: INQUIRY_TO,
-        replyTo: email,
-        subject,
-        text: body,
-      });
-      return res.json({ ok: true, sent: true });
-    } catch (err) {
-      console.error("[inquiry] SMTP send failed", err);
-      return res.status(502).json({
-        ok: false,
-        error:
-          "메일 발송에 실패했습니다. Gmail 앱 비밀번호(SMTP_PASS) 설정을 확인해 주세요.",
-        detail: err?.response || err?.message || "SMTP error",
-      });
-    }
+    return res.status(502).json({
+      ok: false,
+      error:
+        "메일 발송에 실패했습니다. 첫 문의 시 수신 메일함에서 FormSubmit 활성화 메일을 확인해 주세요.",
+    });
   })
 );
 
