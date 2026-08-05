@@ -74,6 +74,50 @@ const FaqPage = {
     el.className = `faq-form-msg ${type === "error" ? "is-error" : "is-ok"}`;
   },
 
+  isEn() {
+    return typeof Locale !== "undefined" && Locale.current === "en";
+  },
+
+  async sendViaFormSubmit(name, email, message) {
+    const res = await fetch(
+      `https://formsubmit.co/ajax/${encodeURIComponent(this.inquiryTo)}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          message,
+          _subject: `[CMC 문의] ${name}`,
+          _replyto: email,
+          _template: "table",
+          _captcha: false,
+        }),
+      }
+    );
+    const data = await res.json().catch(() => ({}));
+    const ok =
+      res.ok &&
+      String(data.success).toLowerCase() !== "false" &&
+      !String(data.message || "")
+        .toLowerCase()
+        .includes("will not work");
+    return { ok, data };
+  },
+
+  async saveOnServer(name, email, message) {
+    const res = await fetch("/api/inquiry", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, message }),
+    });
+    const data = await res.json().catch(() => ({}));
+    return { ok: res.ok && data.ok !== false, data };
+  },
+
   async submitInquiry() {
     const name = document.getElementById("inquiryName").value.trim();
     const email = document.getElementById("inquiryEmail").value.trim();
@@ -82,9 +126,7 @@ const FaqPage = {
 
     if (!name || !email || !message) {
       this.setMsg(
-        typeof Locale !== "undefined" && Locale.current === "en"
-          ? "Please fill in all fields."
-          : "모든 항목을 입력해 주세요.",
+        this.isEn() ? "Please fill in all fields." : "모든 항목을 입력해 주세요.",
         "error"
       );
       return;
@@ -94,78 +136,61 @@ const FaqPage = {
     this.setMsg("");
 
     try {
-      const res = await fetch("/api/inquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        this.setMsg(
-          data.error ||
-            (typeof Locale !== "undefined" && Locale.current === "en"
-              ? "Failed to send inquiry."
-              : "문의 발송에 실패했습니다."),
-          "error"
-        );
-        return;
-      }
+      // 1) Browser → FormSubmit (server-side FormSubmit is rejected)
+      // 2) Also save on our API so admin can read inquiries
+      const [mailResult, saveResult] = await Promise.all([
+        this.sendViaFormSubmit(name, email, message).catch((err) => ({
+          ok: false,
+          data: { message: String(err?.message || err) },
+        })),
+        this.saveOnServer(name, email, message).catch(() => ({
+          ok: false,
+          data: {},
+        })),
+      ]);
 
-      if (data.sent) {
-        this.setMsg(
-          typeof Locale !== "undefined" && Locale.current === "en"
-            ? "Your inquiry has been sent."
-            : "문의가 접수되었습니다.",
-          "ok"
-        );
+      if (mailResult.ok || saveResult.ok) {
+        const note = String(mailResult.data?.message || "");
+        const needsActivate =
+          /activat|confirm|check your email/i.test(note) ||
+          (!mailResult.ok && saveResult.ok);
+
+        if (needsActivate && !mailResult.ok) {
+          this.setMsg(
+            this.isEn()
+              ? "Inquiry saved. Check 2026CMCSEOUL@gmail.com (including spam) and click the FormSubmit activation link once."
+              : "문의가 저장되었습니다. 2026CMCSEOUL@gmail.com 메일함(스팸 포함)에서 FormSubmit 활성화 링크를 한 번 눌러 주세요.",
+            "ok"
+          );
+        } else {
+          this.setMsg(
+            this.isEn()
+              ? "Your inquiry has been sent."
+              : "문의가 접수되었습니다.",
+            "ok"
+          );
+        }
         document.getElementById("inquiryForm").reset();
-        setTimeout(() => this.closeModal?.(), 1200);
-        return;
-      }
-
-      if (data.mailto) {
-        window.location.href = data.mailto;
-        this.setMsg(
-          typeof Locale !== "undefined" && Locale.current === "en"
-            ? "Opening your mail app..."
-            : "메일 앱을 엽니다...",
-          "ok"
-        );
-        setTimeout(() => this.closeModal?.(), 800);
+        setTimeout(() => this.closeModal?.(), 1800);
         return;
       }
 
       this.setMsg(
-        typeof Locale !== "undefined" && Locale.current === "en"
-          ? "Failed to send inquiry."
-          : "문의 발송에 실패했습니다.",
+        this.isEn()
+          ? "Failed to send inquiry. Please try again."
+          : "문의 발송에 실패했습니다. 잠시 후 다시 시도해 주세요.",
         "error"
       );
     } catch {
       this.setMsg(
-        typeof Locale !== "undefined" && Locale.current === "en"
-          ? "Failed to send inquiry."
+        this.isEn()
+          ? "Failed to send inquiry. Please try again."
           : "문의 발송에 실패했습니다. 잠시 후 다시 시도해 주세요.",
         "error"
       );
     } finally {
       submitBtn.disabled = false;
     }
-  },
-
-  openMailto(name, email, message) {
-    const subject = encodeURIComponent(`[CMC 문의] ${name}`);
-    const body = encodeURIComponent(
-      `이름: ${name}\n회신 받을 메일: ${email}\n\n${message}`
-    );
-    window.location.href = `mailto:${this.inquiryTo}?subject=${subject}&body=${body}`;
-    this.setMsg(
-      typeof Locale !== "undefined" && Locale.current === "en"
-        ? "Opening your mail app..."
-        : "메일 앱을 엽니다...",
-      "ok"
-    );
-    setTimeout(() => this.closeModal?.(), 800);
   },
 };
 

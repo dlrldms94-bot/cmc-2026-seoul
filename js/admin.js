@@ -39,6 +39,7 @@ const AdminApp = {
         .toISOString()
         .slice(0, 10);
     }
+    this.loadInquiries();
   },
 
   setError(id, message) {
@@ -143,6 +144,41 @@ const AdminApp = {
         return;
       }
       listEl.innerHTML = `<div class="admin-empty">목록을 불러오지 못했습니다.</div>`;
+    }
+  },
+
+  async loadInquiries() {
+    const listEl = document.getElementById("inquiryList");
+    if (!listEl) return;
+    listEl.innerHTML = `<div class="admin-empty">불러오는 중...</div>`;
+    try {
+      const list = await this.api("/api/inquiries");
+      if (!list.length) {
+        listEl.innerHTML = `<div class="admin-empty">접수된 문의가 없습니다.</div>`;
+        return;
+      }
+      listEl.innerHTML = list
+        .map((item) => {
+          const when = String(item.createdAt || "").replace("T", " ").slice(0, 19);
+          return `
+        <article class="admin-item admin-inquiry-item">
+          <div class="admin-item-main">
+            <strong>${this.escape(item.name)}</strong>
+            <div class="admin-item-meta">
+              <a href="mailto:${this.escape(item.email)}">${this.escape(item.email)}</a>
+              · ${this.escape(when)}
+            </div>
+            <p class="admin-inquiry-body">${this.escape(item.message)}</p>
+          </div>
+        </article>`;
+        })
+        .join("");
+    } catch (err) {
+      if (err.status === 401) {
+        this.showLogin();
+        return;
+      }
+      listEl.innerHTML = `<div class="admin-empty">문의 목록을 불러오지 못했습니다.</div>`;
     }
   },
 

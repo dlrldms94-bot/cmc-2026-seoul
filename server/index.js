@@ -104,6 +104,31 @@ app.get("/api/admin/me", (req, res) => {
 
 const INQUIRY_TO = process.env.INQUIRY_TO || "2026CMCSEOUL@gmail.com";
 
+async function trySendSmtp({ name, email, message }) {
+  const smtpUser = String(process.env.SMTP_USER || "").trim();
+  const smtpPass = String(process.env.SMTP_PASS || "").replace(/\s+/g, "");
+  if (!smtpUser || !smtpPass) return false;
+
+  const nodemailer = require("nodemailer");
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    connectionTimeout: 8000,
+    greetingTimeout: 8000,
+    socketTimeout: 12000,
+    auth: { user: smtpUser, pass: smtpPass },
+  });
+  await transporter.sendMail({
+    from: `"CMC SEOUL" <${smtpUser}>`,
+    to: INQUIRY_TO,
+    replyTo: email,
+    subject: `[CMC 문의] ${name}`,
+    text: `이름: ${name}\n회신 받을 메일: ${email}\n\n${message}`,
+  });
+  return true;
+}
+
 app.post(
   "/api/inquiry",
   handleAsync(async (req, res) => {
@@ -118,73 +143,29 @@ app.post(
       return res.status(400).json({ error: "Invalid email" });
     }
 
-    const subject = `[CMC 문의] ${name}`;
-    const textBody = `이름: ${name}\n회신 받을 메일: ${email}\n\n${message}`;
+    // Persist first so inquiries are never lost if mail fails.
+    const saved = await db.createInquiry({ name, email, message });
 
-    // Prefer HTTPS email relay (Render often blocks outbound SMTP ports).
-    try {
-      const formRes = await fetch(
-        `https://formsubmit.co/ajax/${encodeURIComponent(INQUIRY_TO)}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            message: textBody,
-            _subject: subject,
-            _replyto: email,
-            _template: "table",
-            _captcha: "false",
-          }),
-        }
-      );
-      const formData = await formRes.json().catch(() => ({}));
-      if (formRes.ok) {
-        return res.json({
-          ok: true,
-          sent: true,
-          provider: "formsubmit",
-          note: formData?.success || null,
-        });
-      }
-      console.error("[inquiry] FormSubmit failed", formRes.status, formData);
-    } catch (err) {
-      console.error("[inquiry] FormSubmit request error", err);
-    }
-
-    const smtpUser = String(process.env.SMTP_USER || "").trim();
-    const smtpPass = String(process.env.SMTP_PASS || "").replace(/\s+/g, "");
-    if (smtpUser && smtpPass) {
-      try {
-        const nodemailer = require("nodemailer");
-        const transporter = nodemailer.createTransport({
-          host: "smtp.gmail.com",
-          port: 465,
-          secure: true,
-          auth: { user: smtpUser, pass: smtpPass },
-        });
-        await transporter.sendMail({
-          from: `"CMC SEOUL" <${smtpUser}>`,
-          to: INQUIRY_TO,
-          replyTo: email,
-          subject,
-          text: textBody,
-        });
-        return res.json({ ok: true, sent: true, provider: "smtp" });
-      } catch (err) {
-        console.error("[inquiry] SMTP send failed", err);
-      }
-    }
-
-    return res.status(502).json({
-      ok: false,
-      error:
-        "메일 발송에 실패했습니다. 첫 문의 시 수신 메일함에서 FormSubmit 활성화 메일을 확인해 주세요.",
+    // Best-effort SMTP in background — never block the response
+    // (Render free often hangs on outbound SMTP ports).
+    trySendSmtp({ name, email, message }).catch((err) => {
+      console.error("[inquiry] SMTP send failed", err?.message || err);
     });
+
+    return res.json({
+      ok: true,
+      saved: true,
+      id: saved.id,
+    });
+  })
+);
+
+app.get(
+  "/api/inquiries",
+  requireAdmin,
+  handleAsync(async (_req, res) => {
+    const list = await db.listInquiries();
+    res.json(list);
   })
 );
 

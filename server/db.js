@@ -161,6 +161,16 @@ async function initDatabase() {
     )
   `);
 
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS inquiries (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      message TEXT NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `);
+
   await seedNoticesIfEmpty();
   console.log("[db] PostgreSQL 연결 완료");
 }
@@ -301,6 +311,95 @@ async function deleteNotice(id) {
   return result.rowCount > 0;
 }
 
+const INQUIRIES_FILE = path.join(__dirname, "..", "data", "inquiries.json");
+
+function ensureInquiriesFile() {
+  const dir = path.dirname(INQUIRIES_FILE);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  if (!fs.existsSync(INQUIRIES_FILE)) {
+    fs.writeFileSync(INQUIRIES_FILE, "[]", "utf8");
+  }
+}
+
+function readInquiriesJson() {
+  ensureInquiriesFile();
+  try {
+    const data = JSON.parse(fs.readFileSync(INQUIRIES_FILE, "utf8"));
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeInquiriesJson(list) {
+  ensureInquiriesFile();
+  fs.writeFileSync(INQUIRIES_FILE, JSON.stringify(list, null, 2), "utf8");
+}
+
+function normalizeInquiry(item) {
+  return {
+    id: String(item.id),
+    name: String(item.name || "").trim(),
+    email: String(item.email || "").trim(),
+    message: String(item.message || "").trim(),
+    createdAt: formatIso(item.createdAt || item.created_at),
+  };
+}
+
+async function createInquiry(payload) {
+  const name = String(payload.name || "").trim();
+  const email = String(payload.email || "").trim();
+  const message = String(payload.message || "").trim();
+  const now = new Date().toISOString();
+
+  if (useJson) {
+    const list = readInquiriesJson();
+    const item = normalizeInquiry({
+      id: `i${Date.now()}`,
+      name,
+      email,
+      message,
+      createdAt: now,
+    });
+    list.unshift(item);
+    writeInquiriesJson(list);
+    return item;
+  }
+
+  const result = await pool.query(
+    `INSERT INTO inquiries (name, email, message, created_at)
+     VALUES ($1, $2, $3, NOW())
+     RETURNING id, name, email, message, created_at`,
+    [name, email, message]
+  );
+  const row = result.rows[0];
+  return normalizeInquiry({
+    id: row.id,
+    name: row.name,
+    email: row.email,
+    message: row.message,
+    created_at: row.created_at,
+  });
+}
+
+async function listInquiries() {
+  if (useJson) {
+    return readInquiriesJson().map(normalizeInquiry);
+  }
+  const result = await pool.query(
+    "SELECT id, name, email, message, created_at FROM inquiries ORDER BY id DESC LIMIT 200"
+  );
+  return result.rows.map((row) =>
+    normalizeInquiry({
+      id: row.id,
+      name: row.name,
+      email: row.email,
+      message: row.message,
+      created_at: row.created_at,
+    })
+  );
+}
+
 module.exports = {
   initDatabase,
   isUsingJson,
@@ -309,4 +408,6 @@ module.exports = {
   createNotice,
   updateNotice,
   deleteNotice,
+  createInquiry,
+  listInquiries,
 };
