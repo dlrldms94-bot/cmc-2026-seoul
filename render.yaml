@@ -16,4 +16,10 @@ services:
       - key: SESSION_SECRET
         generateValue: true
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: cmc-2026-seoul-db
+          property: connectionString
+
+databases:
+  - name: cmc-2026-seoul-db
+    plan: basic-256mb
