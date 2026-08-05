@@ -133,7 +133,7 @@ const FaqPage = {
   openMailto(name, email, message) {
     const subject = encodeURIComponent(`[CMC 문의] ${name}`);
     const body = encodeURIComponent(
-      `이름: ${name}\n이메일: ${email}\n\n${message}`
+      `이름: ${name}\n회신 받을 메일: ${email}\n\n${message}`
     );
     window.location.href = `mailto:${this.inquiryTo}?subject=${subject}&body=${body}`;
     this.setMsg(

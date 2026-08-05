@@ -119,7 +119,7 @@ app.post(
     }
 
     const subject = `[CMC 문의] ${name}`;
-    const body = `이름: ${name}\n이메일: ${email}\n\n${message}`;
+    const body = `이름: ${name}\n회신 받을 메일: ${email}\n\n${message}`;
 
     if (process.env.SMTP_USER && process.env.SMTP_PASS) {
       try {
