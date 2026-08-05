@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>프로그램 | 2026 CMC SEOUL</title>
+    <meta
+      name="description"
+      content="2026 위기관리회의 SEOUL 세부 프로그램 — 9월 17일(목)"
+    />
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    />
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/sub.css" />
+    <link rel="stylesheet" href="../css/program.css" />
+  </head>
+  <body class="page-sub">
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="../index.html" class="logo" aria-label="2026 CMC SEOUL">
+          <span data-i18n="brand.name">위기관리회의</span>
+        </a>
+
+        <nav aria-label="Primary">
+          <ul class="gnb" id="gnb">
+            <li>
+              <a href="../about/overview.html" data-i18n="nav.about">행사소개</a>
+              <ul class="submenu">
+                <li>
+                  <a href="../about/greeting.html" data-i18n="nav.greeting"
+                    >모시는 글</a
+                  >
+                </li>
+                <li>
+                  <a href="../about/overview.html" data-i18n="nav.overview"
+                    >행사개요</a
+                  >
+                </li>
+                <li>
+                  <a href="../about/cmc.html" data-i18n="nav.cmc">CMC</a>
+                </li>
+                <li>
+                  <a href="../about/location.html" data-i18n="nav.location"
+                    >오시는 길</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="is-active">
+              <a href="schedule.html" data-i18n="nav.program">프로그램</a>
+              <ul class="submenu">
+                <li>
+                  <a href="schedule.html" data-i18n="nav.schedule">프로그램</a>
+                </li>
+                <li>
+                  <a href="speakers.html" data-i18n="nav.speakers">연사소개</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="../notice/announcements.html" data-i18n="nav.notice"
+                >알림마당</a
+              >
+              <ul class="submenu">
+                <li>
+                  <a
+                    href="../notice/announcements.html"
+                    data-i18n="nav.announcements"
+                    >공지사항</a
+                  >
+                </li>
+                <li>
+                  <a href="../notice/qna.html" data-i18n="nav.qna">Q&A</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="../archive/index.html" data-i18n="nav.archive"
+                >아카이브</a
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <button
+            type="button"
+            class="lang-btn"
+            id="langToggle"
+            data-i18n="lang.toggle"
+            data-i18n-aria="lang.aria"
+            aria-label="Switch to English"
+          >
+            ENGLISH
+          </button>
+          <button
+            type="button"
+            class="menu-toggle"
+            id="menuToggle"
+            aria-expanded="false"
+            data-i18n-aria="menu.open"
+            aria-label="메뉴 열기"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-banner">
+        <div class="page-banner-inner">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="../index.html" data-i18n="crumb.home">홈</a>
+            <span class="sep" aria-hidden="true">&gt;</span>
+            <a href="schedule.html" data-i18n="nav.program">프로그램</a>
+            <span class="sep" aria-hidden="true">&gt;</span>
+            <span class="current" data-i18n="nav.schedule" aria-current="page"
+              >프로그램</span
+            >
+          </nav>
+          <h1 class="page-banner-title" data-i18n="nav.schedule">프로그램</h1>
+        </div>
+      </section>
+
+      <section class="page-content program-content">
+        <header class="section-head program-head">
+          <span class="ko">프로그램</span>
+          <span class="en">Program</span>
+          <span class="line" aria-hidden="true"></span>
+        </header>
+
+        <div class="program-tabs" role="tablist" aria-label="Program days">
+          <button
+            type="button"
+            class="program-tab is-active"
+            role="tab"
+            aria-selected="true"
+            aria-controls="day-1"
+            id="tab-day-1"
+            data-i18n="program.day1"
+          >
+            Day1 9.17(목)
+          </button>
+          <button
+            type="button"
+            class="program-tab"
+            role="tab"
+            aria-selected="false"
+            aria-controls="day-2"
+            id="tab-day-2"
+            data-i18n="program.day2"
+          >
+            Day2 9.18(금)
+          </button>
+        </div>
+
+        <div
+          class="program-panel"
+          id="day-1"
+          role="tabpanel"
+          aria-labelledby="tab-day-1"
+        >
+          <div class="program-table-wrap">
+            <table class="program-table">
+              <thead>
+                <tr>
+                  <th class="col-time" data-i18n="program.th.time">시간</th>
+                  <th class="col-cat" data-i18n="program.th.category">구분</th>
+                  <th class="col-prog" data-i18n="program.th.program">
+                    프로그램
+                  </th>
+                  <th class="col-speaker" data-i18n="program.th.speaker">
+                    연사
+                  </th>
+                </tr>
+              </thead>
+                            <tbody>
+                <tr>
+                  <td class="col-time">09:00~09:30</td>
+                  <td class="col-cat"></td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="하우스 오픈/참가자 등록"
+                      data-en="Registration"
+                      >하우스 오픈/참가자 등록</span
+                    >
+                    <span
+                      class="prog-note"
+                      data-ko="VIP 사전환담 (09:45~10:00)"
+                      data-en="VIP Pre-meeting (09:45~10:00)"
+                      >VIP 사전환담 (09:45~10:00)</span
+                    >
+                  </td>
+                  <td class="col-speaker"></td>
+                </tr>
+
+                <tr class="is-section">
+                  <td
+                    colspan="4"
+                    data-ko="개회식"
+                    data-en="Opening"
+                  >
+                    개회식
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="col-time">09:30~09:43</td>
+                  <td class="col-cat"></td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="개회"
+                      data-en="Opening Announcement"
+                      >개회</span
+                    >
+                  </td>
+                  <td class="col-speaker"></td>
+                </tr>
+                <tr>
+                  <td class="col-time">09:43~09:50</td>
+                  <td class="col-cat"></td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="오프닝 세레머니 및 단체사진"
+                      data-en="Opening Ceremony &amp; Group Photo"
+                      >오프닝 세레머니 및 단체사진</span
+                    >
+                  </td>
+                  <td class="col-speaker">-</td>
+                </tr>
+                <tr>
+                  <td class="col-time">09:50~09:55</td>
+                  <td class="col-cat"></td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="오프닝 퍼포먼스"
+                      data-en="Opening Performance"
+                      >오프닝 퍼포먼스</span
+                    >
+                  </td>
+                  <td class="col-speaker">
+                    크리아트 컴퍼니 LED 대북 퍼포먼스
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col-time">09:55~10:20</td>
+                  <td class="col-cat">
+                    <span class="cat-keynote" data-i18n="program.cat.keynote"
+                      >기조연설</span
+                    >
+                  </td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="기조연설"
+                      data-en="Keynote Speech"
+                      >기조연설</span
+                    >
+                  </td>
+                  <td class="col-speaker">서울시립대학교 윤명오 교수</td>
+                </tr>
+
+                <tr class="is-section">
+                  <td
+                    colspan="4"
+                    data-ko="[세션1] 기후위기 대응을 위한 재난관리 전략"
+                    data-en="[Session 1] Climate Crisis and Resilience"
+                  >
+                    [세션1] 기후위기 대응을 위한 재난관리 전략
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="col-time">10:20~10:25</td>
+                  <td class="col-cat">
+                    <span
+                      class="cat-session"
+                      data-ko="세션1"
+                      data-en="Session 1"
+                      >세션1</span
+                    >
+                  </td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션1 소개"
+                      data-en="Session Introduction"
+                      >세션1 소개</span
+                    >
+                  </td>
+                  <td class="col-speaker"></td>
+                </tr>
+                <tr>
+                  <td class="col-time">10:25~11:15</td>
+                  <td class="col-cat">
+                    <span
+                      class="cat-session"
+                      data-ko="세션1"
+                      data-en="Session 1"
+                      >세션1</span
+                    >
+                  </td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션1 발표"
+                      data-en="Presentations by Participating Cities"
+                      >세션1 발표</span
+                    >
+                  </td>
+                  <td class="col-speaker"></td>
+                </tr>
+                <tr>
+                  <td class="col-time">11:15~11:40</td>
+                  <td class="col-cat">
+                    <span
+                      class="cat-session"
+                      data-ko="세션1"
+                      data-en="Session 1"
+                      >세션1</span
+                    >
+                  </td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="질의응답 및 종합토론"
+                      data-en="Q&amp;A and Discussion"
+                      >질의응답 및 종합토론</span
+                    >
+                  </td>
+                  <td
+                    class="col-speaker"
+                    data-ko="좌장 : 광주대학교 송창영 교수"
+                    data-en="Moderator: 광주대학교 송창영 교수"
+                  >
+                    좌장 : 광주대학교 송창영 교수
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col-time">11:40~13:00</td>
+                  <td class="col-cat"></td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="오찬"
+                      data-en="Luncheon"
+                      >오찬</span
+                    >
+                  </td>
+                  <td class="col-speaker"></td>
+                </tr>
+                <tr>
+                  <td class="col-time">13:00~13:05</td>
+                  <td class="col-cat"></td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="주제영상 상영"
+                      data-en="Theme Video Screening"
+                      >주제영상 상영</span
+                    >
+                  </td>
+                  <td class="col-speaker"></td>
+                </tr>
+
+                <tr class="is-section">
+                  <td
+                    colspan="4"
+                    data-ko="[세션2] 국제공조를 통한 재난대응 역량강화"
+                    data-en="[Session 2] International Cooperation in Crisis Response"
+                  >
+                    [세션2] 국제공조를 통한 재난대응 역량강화
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="col-time">13:05~13:10</td>
+                  <td class="col-cat">
+                    <span
+                      class="cat-session"
+                      data-ko="세션2"
+                      data-en="Session 2"
+                      >세션2</span
+                    >
+                  </td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션2 소개"
+                      data-en="Session Introduction"
+                      >세션2 소개</span
+                    >
+                  </td>
+                  <td class="col-speaker"></td>
+                </tr>
+                <tr>
+                  <td class="col-time">13:10~13:30</td>
+                  <td class="col-cat">
+                    <span
+                      class="cat-session"
+                      data-ko="세션2"
+                      data-en="Session 2"
+                      >세션2</span
+                    >
+                  </td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션2 발표"
+                      data-en="Presentations by Participating Cities"
+                      >세션2 발표</span
+                    >
+                  </td>
+                  <td class="col-speaker"></td>
+                </tr>
+                <tr>
+                  <td class="col-time">13:30~13:50</td>
+                  <td class="col-cat">
+                    <span
+                      class="cat-session"
+                      data-ko="세션2"
+                      data-en="Session 2"
+                      >세션2</span
+                    >
+                  </td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="질의응답 및 종합토론"
+                      data-en="Q&amp;A and Discussion"
+                      >질의응답 및 종합토론</span
+                    >
+                  </td>
+                  <td
+                    class="col-speaker"
+                    data-ko="좌장 : 원광대학교 양기근 교수"
+                    data-en="Moderator: 원광대학교 양기근 교수"
+                  >
+                    좌장 : 원광대학교 양기근 교수
+                  </td>
+                </tr>
+
+                <tr class="is-section">
+                  <td
+                    colspan="4"
+                    data-ko="[세션3] 데이터 기반 디지털 재난관리 체계"
+                    data-en="[Session 3] AI and Digital Technologies in Crisis Management"
+                  >
+                    [세션3] 데이터 기반 디지털 재난관리 체계
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="col-time">13:50~13:55</td>
+                  <td class="col-cat">
+                    <span
+                      class="cat-session"
+                      data-ko="세션3"
+                      data-en="Session 3"
+                      >세션3</span
+                    >
+                  </td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션3 소개"
+                      data-en="Session Introduction"
+                      >세션3 소개</span
+                    >
+                  </td>
+                  <td class="col-speaker"></td>
+                </tr>
+                <tr>
+                  <td class="col-time">13:55~14:35</td>
+                  <td class="col-cat">
+                    <span
+                      class="cat-session"
+                      data-ko="세션3"
+                      data-en="Session 3"
+                      >세션3</span
+                    >
+                  </td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션3 발표"
+                      data-en="Presentations by Participating Cities"
+                      >세션3 발표</span
+                    >
+                  </td>
+                  <td class="col-speaker"></td>
+                </tr>
+                <tr>
+                  <td class="col-time">14:35~14:55</td>
+                  <td class="col-cat">
+                    <span
+                      class="cat-session"
+                      data-ko="세션3"
+                      data-en="Session 3"
+                      >세션3</span
+                    >
+                  </td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="질의응답 및 종합토론"
+                      data-en="Q&amp;A and Discussion"
+                      >질의응답 및 종합토론</span
+                    >
+                  </td>
+                  <td
+                    class="col-speaker"
+                    data-ko="좌장 : 선문대학교 김응석 교수"
+                    data-en="Moderator: 선문대학교 김응석 교수"
+                  >
+                    좌장 : 선문대학교 김응석 교수
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col-time">14:55~15:30</td>
+                  <td class="col-cat"></td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="커피 브레이크"
+                      data-en="Coffee Break"
+                      >커피 브레이크</span
+                    >
+                  </td>
+                  <td class="col-speaker"></td>
+                </tr>
+
+                <tr class="is-section">
+                  <td
+                    colspan="4"
+                    data-ko="[세션4] 도시별 대규모 재난관리 체계"
+                    data-en="[Session 4] Urban Disaster Management Systems"
+                  >
+                    [세션4] 도시별 대규모 재난관리 체계
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="col-time">15:30~15:35</td>
+                  <td class="col-cat">
+                    <span
+                      class="cat-session"
+                      data-ko="세션4"
+                      data-en="Session 4"
+                      >세션4</span
+                    >
+                  </td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션4 소개"
+                      data-en="Session Introduction"
+                      >세션4 소개</span
+                    >
+                  </td>
+                  <td class="col-speaker"></td>
+                </tr>
+                <tr>
+                  <td class="col-time">15:35~15:55</td>
+                  <td class="col-cat">
+                    <span
+                      class="cat-session"
+                      data-ko="세션4"
+                      data-en="Session 4"
+                      >세션4</span
+                    >
+                  </td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션4 발표"
+                      data-en="Presentations by Participating Cities"
+                      >세션4 발표</span
+                    >
+                  </td>
+                  <td class="col-speaker"></td>
+                </tr>
+                <tr>
+                  <td class="col-time">15:55~16:10</td>
+                  <td class="col-cat">
+                    <span
+                      class="cat-session"
+                      data-ko="세션4"
+                      data-en="Session 4"
+                      >세션4</span
+                    >
+                  </td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="질의응답 및 종합토론"
+                      data-en="Q&amp;A and Discussion"
+                      >질의응답 및 종합토론</span
+                    >
+                  </td>
+                  <td
+                    class="col-speaker"
+                    data-ko="좌장 : 서울시립대학교 함승희 교수"
+                    data-en="Moderator: 서울시립대학교 함승희 교수"
+                  >
+                    좌장 : 서울시립대학교 함승희 교수
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col-time">16:10~16:15</td>
+                  <td class="col-cat"></td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="성과 공유"
+                      data-en="Annual Report from Secretariat"
+                      >성과 공유</span
+                    >
+                  </td>
+                  <td
+                    class="col-speaker"
+                    data-ko="일본 사무국"
+                    data-en="Japan Secretariat"
+                  >
+                    일본 사무국
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col-time">16:15~16:25</td>
+                  <td class="col-cat"></td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="차기 개최 도시 발표 및 차기 개최 도시 연설"
+                      data-en="Announcement of the Next Host City &amp; Address by the Next Host City"
+                      >차기 개최 도시 발표 및 차기 개최 도시 연설</span
+                    >
+                  </td>
+                  <td
+                    class="col-speaker"
+                    data-ko="일본 사무국"
+                    data-en="Japan Secretariat"
+                  >
+                    일본 사무국
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col-time">16:25~16:30</td>
+                  <td class="col-cat"></td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="폐회"
+                      data-en="Closing Address"
+                      >폐회</span
+                    >
+                  </td>
+                  <td class="col-speaker"></td>
+                </tr>
+                <tr>
+                  <td class="col-time">17:00~19:00</td>
+                  <td class="col-cat"></td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="VIP 만찬"
+                      data-en="VIP Dinner"
+                      >VIP 만찬</span
+                    >
+                  </td>
+                  <td class="col-speaker"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="program-note" data-i18n="program.note">
+            * 상기 프로그램은 사정에 따라 변경될 수 있습니다.
+          </p>
+        </div>
+
+        <div
+          class="program-panel"
+          id="day-2"
+          role="tabpanel"
+          aria-labelledby="tab-day-2"
+          hidden
+        >
+          <div class="program-empty" data-i18n="program.empty">
+            Day2 프로그램은 추후 공개 예정입니다.
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-logo">
+          <span data-i18n="brand.name">위기관리회의</span>
+        </div>
+
+        <div class="footer-center">
+          <ul class="footer-links">
+            <li>
+              <a href="#" data-i18n="footer.privacy">개인정보처리방침</a>
+            </li>
+            <li>
+              <a href="#" data-i18n="footer.terms">이용약관</a>
+            </li>
+            <li>
+              <a href="#" data-i18n="footer.sitemap">사이트맵</a>
+            </li>
+          </ul>
+          <div class="footer-info">
+            <p>
+              <span data-i18n="footer.org"
+                >2026 위기관리회의 SEOUL 운영사무국</span
+              >
+              <span aria-hidden="true"> | </span>
+              <span data-i18n="footer.tel">TEL : 070-8855-3831</span>
+              <span aria-hidden="true"> | </span>
+              <span data-i18n="footer.email"
+                >E-mail : 2026CMCSEOUL@gmail.com</span
+              >
+            </p>
+            <p class="footer-copy" data-i18n="footer.copyright">
+              © 2026 CMC. All rights reserved.
+            </p>
+          </div>
+        </div>
+
+        <div class="footer-client">
+          <img
+            src="../img/client-logo.png"
+            alt="서울특별시 SEOUL METROPOLITAN GOVERNMENT"
+          />
+        </div>
+      </div>
+    </footer>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/program.js"></script>
+  </body>
+</html>

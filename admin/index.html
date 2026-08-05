@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>공지사항 관리 | 2026 CMC SEOUL</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    />
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/admin.css" />
+  </head>
+  <body class="page-admin">
+    <div class="admin-shell">
+      <section class="admin-card admin-login" id="loginView">
+        <h1>공지사항 관리</h1>
+        <p>관리자 비밀번호로 로그인해 주세요.</p>
+        <form id="loginForm">
+          <div class="admin-field">
+            <label for="password">비밀번호</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+          <button type="submit" class="admin-btn admin-btn-primary">
+            로그인
+          </button>
+          <p class="admin-error" id="loginError" hidden></p>
+        </form>
+      </section>
+
+      <section id="dashboardView" hidden>
+        <div class="admin-top">
+          <h1>공지사항 관리</h1>
+          <div class="admin-top-actions">
+            <a class="admin-btn admin-btn-ghost" href="../notice/announcements.html"
+              >게시판 보기</a
+            >
+            <button type="button" class="admin-btn admin-btn-navy" id="logoutBtn">
+              로그아웃
+            </button>
+          </div>
+        </div>
+
+        <div class="admin-grid">
+          <div class="admin-card">
+            <h2 class="admin-panel-title" id="formTitle">새 글 작성</h2>
+            <form id="noticeForm">
+              <input type="hidden" id="noticeId" value="" />
+              <div class="admin-field">
+                <label for="titleKo">제목 (한국어) *</label>
+                <input id="titleKo" required />
+              </div>
+              <div class="admin-field">
+                <label for="titleEn">제목 (English)</label>
+                <input id="titleEn" />
+              </div>
+              <div class="admin-field">
+                <label for="bodyKo">내용 (한국어)</label>
+                <textarea id="bodyKo"></textarea>
+              </div>
+              <div class="admin-field">
+                <label for="bodyEn">내용 (English)</label>
+                <textarea id="bodyEn"></textarea>
+              </div>
+              <div class="admin-field">
+                <label for="date">등록일</label>
+                <input id="date" type="date" />
+              </div>
+              <label class="admin-check">
+                <input id="pinned" type="checkbox" />
+                상단 고정 (공지 뱃지)
+              </label>
+              <div class="admin-form-actions">
+                <button type="submit" class="admin-btn admin-btn-primary" id="saveBtn">
+                  등록
+                </button>
+                <button
+                  type="button"
+                  class="admin-btn admin-btn-ghost"
+                  id="resetBtn"
+                >
+                  초기화
+                </button>
+              </div>
+              <p class="admin-error" id="formError" hidden></p>
+            </form>
+          </div>
+
+          <div class="admin-card">
+            <h2 class="admin-panel-title">등록된 글</h2>
+            <div class="admin-list" id="noticeList"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="../js/admin.js"></script>
+  </body>
+</html>

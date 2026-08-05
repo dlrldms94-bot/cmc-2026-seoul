@@ -1,0 +1,132 @@
+/* 행사개요 */
+.overview-body {
+  position: relative;
+  overflow: hidden;
+}
+
+.overview-content {
+  position: relative;
+  z-index: 1;
+  max-width: 980px;
+  padding-top: 88px;
+  padding-bottom: 120px;
+}
+
+.overview-head {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.overview-head .ko {
+  font-size: clamp(32px, 3.4vw, 42px);
+  color: #e8890c;
+}
+
+.overview-head .en {
+  margin-top: 8px;
+  font-size: clamp(18px, 2vw, 22px);
+  color: var(--color-navy);
+}
+
+.overview-head .line {
+  margin: 18px auto 0;
+  width: 40px;
+  height: 2px;
+  background: #e8890c;
+}
+
+.overview-main {
+  position: relative;
+}
+
+.overview-wave {
+  position: absolute;
+  left: 50%;
+  top: 25%;
+  z-index: 0;
+  width: 100vw;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.overview-wave img {
+  width: 100%;
+  height: auto;
+  opacity: 0.85;
+}
+
+.overview-list {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  border-top: 1px solid #f0d9b0;
+}
+
+.overview-row {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  column-gap: 36px;
+  align-items: center;
+  min-height: 72px;
+  padding: 18px 12px;
+  border-bottom: 1px solid #f0d9b0;
+}
+
+.overview-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2em 1.2em;
+  border-radius: 999px;
+  background: #ff8c02;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 140, 2, 1) 0%,
+    rgba(255, 179, 71, 1) 100%
+  );
+  color: var(--color-navy);
+  font-size: clamp(15px, 3vw, 20px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  justify-self: start;
+}
+
+.overview-value {
+  color: #222;
+  font-size: clamp(15px, 3vw, 22px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
+@media (max-width: 720px) {
+  .overview-content {
+    padding-top: 56px;
+    padding-bottom: 80px;
+  }
+
+  .overview-head {
+    margin-bottom: 32px;
+  }
+
+  .overview-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    min-height: 0;
+    padding: 16px 4px;
+  }
+
+  .overview-label {
+    width: auto;
+    min-width: 88px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .overview-value {
+    font-size: 15px;
+  }
+}

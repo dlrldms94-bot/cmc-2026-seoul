@@ -1,0 +1,9 @@
+.DS_Store
+.idea/
+.vscode/
+*.log
+.env
+.env.*
+.netlify/
+.vercel/
+node_modules/

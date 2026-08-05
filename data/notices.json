@@ -1,0 +1,62 @@
+[
+  {
+    "id": "n5",
+    "no": 5,
+    "titleKo": "CMC 2026 프로그램 확정 안내",
+    "titleEn": "CMC 2026 Program Confirmed",
+    "bodyKo": "2026 위기관리회의 SEOUL 프로그램이 확정되었습니다.\n자세한 내용은 프로그램 페이지를 확인해 주세요.",
+    "bodyEn": "The 2026 CMC SEOUL program has been confirmed.\nPlease check the Program page for details.",
+    "pinned": true,
+    "date": "2026-09-10",
+    "createdAt": "2026-09-10T00:00:00.000Z",
+    "updatedAt": "2026-09-10T00:00:00.000Z"
+  },
+  {
+    "id": "n4",
+    "no": 4,
+    "titleKo": "프로그램 변경 안내",
+    "titleEn": "Program Change Notice",
+    "bodyKo": "일부 세션 일정이 변경되었습니다.\n변경된 프로그램은 추후 공지 예정입니다.",
+    "bodyEn": "Some session schedules have been updated.\nFurther details will be announced soon.",
+    "pinned": false,
+    "date": "2026-09-10",
+    "createdAt": "2026-09-10T00:00:00.000Z",
+    "updatedAt": "2026-09-10T00:00:00.000Z"
+  },
+  {
+    "id": "n3",
+    "no": 3,
+    "titleKo": "연사 추가 안내",
+    "titleEn": "Additional Speakers Notice",
+    "bodyKo": "추가 연사 정보가 업데이트되었습니다.\n연사소개 페이지를 확인해 주세요.",
+    "bodyEn": "Additional speaker information has been updated.\nPlease check the Speakers page.",
+    "pinned": false,
+    "date": "2026-09-10",
+    "createdAt": "2026-09-10T00:00:00.000Z",
+    "updatedAt": "2026-09-10T00:00:00.000Z"
+  },
+  {
+    "id": "n2",
+    "no": 2,
+    "titleKo": "행사장 안내",
+    "titleEn": "Venue Information",
+    "bodyKo": "행사장 위치 및 이용 안내입니다.\n오시는 길 페이지를 참고해 주세요.",
+    "bodyEn": "Venue location and visitor information.\nPlease refer to the Directions page.",
+    "pinned": false,
+    "date": "2026-09-10",
+    "createdAt": "2026-09-10T00:00:00.000Z",
+    "updatedAt": "2026-09-10T00:00:00.000Z"
+  },
+  {
+    "id": "n1",
+    "no": 1,
+    "titleKo": "호텔 및 교통 안내",
+    "titleEn": "Hotel & Transportation Guide",
+    "bodyKo": "숙박 및 교통 안내를 확인하실 수 있습니다.",
+    "bodyEn": "Hotel and transportation information is available.",
+    "pinned": false,
+    "date": "2026-09-10",
+    "createdAt": "2026-09-10T00:00:00.000Z",
+    "updatedAt": "2026-09-10T00:00:00.000Z"
+  }
+]

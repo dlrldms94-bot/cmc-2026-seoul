@@ -1,0 +1,50 @@
+/* 아카이브 — Coming Soon */
+body.page-archive {
+  background: #fff;
+}
+
+body.page-archive .site-header {
+  position: absolute;
+}
+
+.archive-hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f1e8 url("../img/achive.jpg") center / cover no-repeat;
+  overflow: hidden;
+}
+
+.archive-soon {
+  position: relative;
+  z-index: 1;
+  width: min(230px, 46vw);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #ff8c02;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 140, 2, 1) 0%,
+    rgba(255, 179, 71, 1) 100%
+  );
+  box-shadow: 0 12px 40px rgba(255, 140, 2, 0.28);
+}
+
+.archive-soon-text {
+  color: var(--color-navy);
+  font-size: clamp(24px, 4.5vw, 36px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+@media (max-width: 860px) {
+  .archive-soon {
+    width: min(150px, 52vw);
+  }
+}

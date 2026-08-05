@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>공지사항 상세 | 2026 CMC SEOUL</title>
+    <meta
+      name="description"
+      content="2026 위기관리회의 SEOUL 공지사항"
+    />
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    />
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/sub.css" />
+    <link rel="stylesheet" href="../css/notice.css" />
+  </head>
+  <body class="page-sub">
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="../index.html" class="logo" aria-label="2026 CMC SEOUL">
+          <span data-i18n="brand.name">위기관리회의</span>
+        </a>
+
+        <nav aria-label="Primary">
+          <ul class="gnb" id="gnb">
+            <li>
+              <a href="../about/overview.html" data-i18n="nav.about">행사소개</a>
+              <ul class="submenu">
+                <li>
+                  <a href="../about/greeting.html" data-i18n="nav.greeting"
+                    >모시는 글</a
+                  >
+                </li>
+                <li>
+                  <a href="../about/overview.html" data-i18n="nav.overview"
+                    >행사개요</a
+                  >
+                </li>
+                <li>
+                  <a href="../about/cmc.html" data-i18n="nav.cmc">CMC</a>
+                </li>
+                <li>
+                  <a href="../about/location.html" data-i18n="nav.location"
+                    >오시는 길</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="../program/schedule.html" data-i18n="nav.program"
+                >프로그램</a
+              >
+              <ul class="submenu">
+                <li>
+                  <a href="../program/schedule.html" data-i18n="nav.schedule"
+                    >프로그램</a
+                  >
+                </li>
+                <li>
+                  <a href="../program/speakers.html" data-i18n="nav.speakers"
+                    >연사소개</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="is-active">
+              <a href="announcements.html" data-i18n="nav.notice">알림마당</a>
+              <ul class="submenu">
+                <li>
+                  <a href="announcements.html" data-i18n="nav.announcements"
+                    >공지사항</a
+                  >
+                </li>
+                <li>
+                  <a href="qna.html" data-i18n="nav.qna">Q&A</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="../archive/index.html" data-i18n="nav.archive"
+                >아카이브</a
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <button
+            type="button"
+            class="lang-btn"
+            id="langToggle"
+            data-i18n="lang.toggle"
+            data-i18n-aria="lang.aria"
+            aria-label="Switch to English"
+          >
+            ENGLISH
+          </button>
+          <button
+            type="button"
+            class="menu-toggle"
+            id="menuToggle"
+            aria-expanded="false"
+            data-i18n-aria="menu.open"
+            aria-label="메뉴 열기"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-banner">
+        <div class="page-banner-inner">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="../index.html" data-i18n="crumb.home">홈</a>
+            <span class="sep" aria-hidden="true">&gt;</span>
+            <a href="announcements.html" data-i18n="nav.notice">알림마당</a>
+            <span class="sep" aria-hidden="true">&gt;</span>
+            <span
+              class="current"
+              data-i18n="nav.announcements"
+              aria-current="page"
+              >공지사항</span
+            >
+          </nav>
+          <h1 class="page-banner-title" data-i18n="nav.announcements">
+            공지사항
+          </h1>
+        </div>
+      </section>
+
+      <section class="page-content notice-content">
+        <div class="notice-view" id="noticeView">
+          <p class="notice-view-empty">불러오는 중...</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-logo">
+          <span data-i18n="brand.name">위기관리회의</span>
+        </div>
+
+        <div class="footer-center">
+          <ul class="footer-links">
+            <li>
+              <a href="#" data-i18n="footer.privacy">개인정보처리방침</a>
+            </li>
+            <li>
+              <a href="#" data-i18n="footer.terms">이용약관</a>
+            </li>
+            <li>
+              <a href="#" data-i18n="footer.sitemap">사이트맵</a>
+            </li>
+          </ul>
+          <div class="footer-info">
+            <p>
+              <span data-i18n="footer.org"
+                >2026 위기관리회의 SEOUL 운영사무국</span
+              >
+              <span aria-hidden="true"> | </span>
+              <span data-i18n="footer.tel">TEL : 070-8855-3831</span>
+              <span aria-hidden="true"> | </span>
+              <span data-i18n="footer.email"
+                >E-mail : 2026CMCSEOUL@gmail.com</span
+              >
+            </p>
+            <p class="footer-copy" data-i18n="footer.copyright">
+              © 2026 CMC. All rights reserved.
+            </p>
+          </div>
+        </div>
+
+        <div class="footer-client">
+          <img
+            src="../img/client-logo.png"
+            alt="서울특별시 SEOUL METROPOLITAN GOVERNMENT"
+          />
+        </div>
+      </div>
+    </footer>
+
+    <script src="../js/i18n.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/notice-view.js"></script>
+  </body>
+</html>
