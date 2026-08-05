@@ -3,11 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>공지사항 상세 | 2026 CMC SEOUL</title>
-    <meta
-      name="description"
-      content="2026 위기관리회의 SEOUL 공지사항"
-    />
+    <title>FAQ | 2026 CMC SEOUL</title>
+    <meta name="description" content="2026 위기관리회의 SEOUL FAQ" />
     <link
       rel="stylesheet"
       as="style"
@@ -16,7 +13,7 @@
     />
     <link rel="stylesheet" href="../css/common.css" />
     <link rel="stylesheet" href="../css/sub.css" />
-    <link rel="stylesheet" href="../css/notice.css" />
+    <link rel="stylesheet" href="../css/faq.css" />
   </head>
   <body class="page-sub">
     <header class="site-header">
@@ -123,25 +120,158 @@
             <span class="sep" aria-hidden="true">&gt;</span>
             <a href="announcements.html" data-i18n="nav.notice">알림마당</a>
             <span class="sep" aria-hidden="true">&gt;</span>
-            <span
-              class="current"
-              data-i18n="nav.announcements"
-              aria-current="page"
-              >공지사항</span
+            <span class="current" data-i18n="nav.qna" aria-current="page"
+              >FAQ</span
             >
           </nav>
-          <h1 class="page-banner-title" data-i18n="nav.announcements">
-            공지사항
-          </h1>
+          <h1 class="page-banner-title" data-i18n="nav.qna">FAQ</h1>
         </div>
       </section>
 
-      <section class="page-content notice-content">
-        <div class="notice-view" id="noticeView">
-          <p class="notice-view-empty">불러오는 중...</p>
+      <section class="page-content faq-content">
+        <header class="section-head faq-head">
+          <span class="ko">FAQ</span>
+          <span class="en">Frequently Asked Questions</span>
+          <span class="line" aria-hidden="true"></span>
+        </header>
+
+        <div class="faq-list">
+          <article class="faq-item">
+            <button
+              type="button"
+              class="faq-question"
+              aria-expanded="false"
+            >
+              <span data-ko="질문1" data-en="Question 1">질문1</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-answer" data-ko="답변1" data-en="Answer 1">
+              답변1
+            </div>
+          </article>
+
+          <article class="faq-item">
+            <button
+              type="button"
+              class="faq-question"
+              aria-expanded="false"
+            >
+              <span data-ko="질문2" data-en="Question 2">질문2</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-answer" data-ko="답변2" data-en="Answer 2">
+              답변2
+            </div>
+          </article>
+
+          <article class="faq-item">
+            <button
+              type="button"
+              class="faq-question"
+              aria-expanded="false"
+            >
+              <span data-ko="질문3" data-en="Question 3">질문3</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-answer" data-ko="답변3" data-en="Answer 3">
+              답변3
+            </div>
+          </article>
+
+          <article class="faq-item">
+            <button
+              type="button"
+              class="faq-question"
+              aria-expanded="false"
+            >
+              <span data-ko="질문4" data-en="Question 4">질문4</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-answer" data-ko="답변4" data-en="Answer 4">
+              답변4
+            </div>
+          </article>
+
+          <article class="faq-item">
+            <button
+              type="button"
+              class="faq-question"
+              aria-expanded="false"
+            >
+              <span data-ko="질문5" data-en="Question 5">질문5</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-answer" data-ko="답변5" data-en="Answer 5">
+              답변5
+            </div>
+          </article>
+        </div>
+
+        <div class="faq-actions">
+          <button
+            type="button"
+            class="faq-inquiry-btn"
+            id="inquiryOpenBtn"
+            data-i18n="faq.inquiry"
+          >
+            1:1 문의하기
+          </button>
         </div>
       </section>
     </main>
+
+    <div
+      class="faq-modal"
+      id="inquiryModal"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="inquiryModalTitle"
+    >
+      <div class="faq-modal-backdrop" id="inquiryBackdrop"></div>
+      <div class="faq-modal-panel">
+        <button
+          type="button"
+          class="faq-modal-close"
+          id="inquiryCloseBtn"
+          aria-label="Close"
+        >
+          ×
+        </button>
+        <h2 class="faq-modal-title" id="inquiryModalTitle" data-i18n="faq.inquiry">
+          1:1 문의하기
+        </h2>
+        <form id="inquiryForm">
+          <div class="faq-field">
+            <label for="inquiryName" data-i18n="faq.field.name">이름</label>
+            <input id="inquiryName" name="name" type="text" required autocomplete="name" />
+          </div>
+          <div class="faq-field">
+            <label for="inquiryEmail" data-i18n="faq.field.email">메일</label>
+            <input
+              id="inquiryEmail"
+              name="email"
+              type="email"
+              required
+              autocomplete="email"
+            />
+          </div>
+          <div class="faq-field">
+            <label for="inquiryMessage" data-i18n="faq.field.message">내용</label>
+            <textarea id="inquiryMessage" name="message" required></textarea>
+          </div>
+          <button
+            type="submit"
+            class="faq-submit"
+            id="inquirySubmitBtn"
+            data-i18n="faq.submit"
+          >
+            문의하기
+          </button>
+          <p class="faq-form-msg" id="inquiryMsg" hidden></p>
+        </form>
+      </div>
+    </div>
 
     <footer class="site-footer">
       <div class="footer-inner">
@@ -190,6 +320,6 @@
 
     <script src="../js/i18n.js"></script>
     <script src="../js/common.js"></script>
-    <script src="../js/notice-view.js"></script>
+    <script src="../js/faq.js"></script>
   </body>
 </html>

@@ -102,6 +102,53 @@ app.get("/api/admin/me", (req, res) => {
   res.json({ authenticated: isAuthed(req) });
 });
 
+const INQUIRY_TO = process.env.INQUIRY_TO || "2026CMCSEOUL@gmail.com";
+
+app.post(
+  "/api/inquiry",
+  handleAsync(async (req, res) => {
+    const name = String(req.body?.name || "").trim();
+    const email = String(req.body?.email || "").trim();
+    const message = String(req.body?.message || "").trim();
+
+    if (!name || !email || !message) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ error: "Invalid email" });
+    }
+
+    const subject = `[CMC 문의] ${name}`;
+    const body = `이름: ${name}\n이메일: ${email}\n\n${message}`;
+
+    if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+      try {
+        const nodemailer = require("nodemailer");
+        const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+          },
+        });
+        await transporter.sendMail({
+          from: process.env.SMTP_USER,
+          to: INQUIRY_TO,
+          replyTo: email,
+          subject,
+          text: body,
+        });
+        return res.json({ ok: true, sent: true });
+      } catch (err) {
+        console.error("[inquiry] SMTP send failed", err);
+      }
+    }
+
+    const mailto = `mailto:${INQUIRY_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    res.json({ ok: true, sent: false, mailto });
+  })
+);
+
 app.post(
   "/api/notices",
   requireAdmin,
