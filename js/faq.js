@@ -149,27 +149,27 @@ const FaqPage = {
         })),
       ]);
 
-      if (mailResult.ok || saveResult.ok) {
-        const note = String(mailResult.data?.message || "");
-        const needsActivate =
-          /activat|confirm|check your email/i.test(note) ||
-          (!mailResult.ok && saveResult.ok);
+      const note = String(mailResult.data?.message || "");
+      const needsActivate = /activat|confirm|check your email/i.test(note);
 
-        if (needsActivate && !mailResult.ok) {
-          this.setMsg(
-            this.isEn()
-              ? "Inquiry saved. Check 2026CMCSEOUL@gmail.com (including spam) and click the FormSubmit activation link once."
-              : "문의가 저장되었습니다. 2026CMCSEOUL@gmail.com 메일함(스팸 포함)에서 FormSubmit 활성화 링크를 한 번 눌러 주세요.",
-            "ok"
-          );
-        } else {
-          this.setMsg(
-            this.isEn()
-              ? "Your inquiry has been sent."
-              : "문의가 접수되었습니다.",
-            "ok"
-          );
-        }
+      // FormSubmit first-time setup: real mail won't send until Activate is clicked.
+      if (needsActivate) {
+        this.setMsg(
+          this.isEn()
+            ? "FormSubmit is not activated yet. Open 2026CMCSEOUL@gmail.com (check Spam) and click the 'Activate Form' link once, then try again."
+            : "FormSubmit 활성화가 필요합니다. 2026CMCSEOUL@gmail.com 메일함(스팸함 포함)에서 'Activate Form' 링크를 한 번 누른 뒤 다시 시도해 주세요.",
+          "error"
+        );
+        return;
+      }
+
+      if (mailResult.ok || saveResult.ok) {
+        this.setMsg(
+          this.isEn()
+            ? "Your inquiry has been sent."
+            : "문의가 접수되었습니다.",
+          "ok"
+        );
         document.getElementById("inquiryForm").reset();
         setTimeout(() => this.closeModal?.(), 1800);
         return;
