@@ -158,11 +158,13 @@ ol {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
-.gnb > li:hover .submenu,
-.gnb > li:focus-within .submenu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
+@media (hover: hover) and (min-width: 861px) {
+  .gnb > li:hover .submenu,
+  .gnb > li:focus-within .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 .submenu a {
@@ -376,7 +378,9 @@ body.nav-open .menu-toggle span {
     display: none;
   }
 
-  .submenu {
+  .submenu,
+  .gnb > li:hover .submenu,
+  .gnb > li:focus-within .submenu {
     position: static;
     transform: none;
     opacity: 1;
@@ -391,6 +395,11 @@ body.nav-open .menu-toggle span {
     padding: 10px 0;
     font-size: 15px;
     color: rgba(255, 255, 255, 0.75);
+  }
+
+  body.nav-open {
+    overflow: hidden;
+    touch-action: manipulation;
   }
 
   .lang-btn {
