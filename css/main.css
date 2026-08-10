@@ -12,6 +12,7 @@
 .hero-bg {
   position: absolute;
   inset: 0;
+  overflow: hidden;
   background: #f26a21 url("../img/main-bg.jpg") center / cover no-repeat;
   z-index: 0;
 }
@@ -22,7 +23,19 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: right center;
+}
+
+@media (max-width: 1024px) {
+  .hero-video {
+    object-position: 82% center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-video {
+    object-position: 86% center;
+  }
 }
 
 .hero-bg::after {

@@ -1,4 +1,22 @@
 /* 2026 CMC Seoul — Common */
+@font-face {
+  font-family: "SeoulAlrim";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2505-1@1.0/SeoulAlrimTTF-Bold.woff2")
+    format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SeoulAlrim";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2505-1@1.0/SeoulAlrimTTF-ExtraBold.woff2")
+    format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --color-orange: #f26a21;
   --color-orange-deep: #e85a12;
@@ -11,6 +29,7 @@
   --header-h: 80px;
   --max-w: 1920px;
   --font: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-logo: "SeoulAlrim", "Pretendard", sans-serif;
 }
 
 *,
@@ -90,11 +109,13 @@ ol {
 }
 
 .logo {
-  flex-shrink: 0;
+  flex-shrink: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   color: #111;
-  font-size: 22px;
+  font-family: var(--font-logo);
+  font-size: clamp(13px, 1.6vw, 22px);
   font-weight: 800;
   letter-spacing: -0.04em;
   white-space: nowrap;
@@ -260,7 +281,8 @@ body.nav-open .menu-toggle span {
 
 .footer-logo {
   color: var(--color-white);
-  font-size: 20px;
+  font-family: var(--font-logo);
+  font-size: clamp(14px, 1.5vw, 20px);
   font-weight: 800;
   letter-spacing: -0.04em;
   white-space: nowrap;
@@ -328,7 +350,7 @@ body.nav-open .menu-toggle span {
   }
 
   .logo {
-    font-size: 18px;
+    font-size: clamp(12px, 3.2vw, 16px);
   }
 
   .footer-inner {

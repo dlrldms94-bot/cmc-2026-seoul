@@ -3,7 +3,7 @@
  */
 const I18N = {
   ko: {
-    "brand.name": "위기관리회의",
+    "brand.name": "2026 위기관리회의 SEOUL",
     "nav.about": "행사소개",
     "nav.program": "프로그램",
     "nav.notice": "알림마당",
@@ -108,7 +108,7 @@ const I18N = {
     "faq.submit": "문의하기",
   },
   en: {
-    "brand.name": "CMC",
+    "brand.name": "2026 CMC SEOUL",
     "nav.about": "About",
     "nav.program": "Program",
     "nav.notice": "Notice",
