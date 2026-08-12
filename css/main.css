@@ -59,8 +59,8 @@
   position: relative;
   z-index: 2;
   flex: 1;
-  max-width: var(--max-w);
-  width: 90%;
+  max-width: 1536px;
+  width: 80%;
   margin: 0 auto;
   padding-top: clamp(8vw, 12vw, 16vw);
   display: grid;

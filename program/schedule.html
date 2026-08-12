@@ -136,43 +136,12 @@
           <span class="line" aria-hidden="true"></span>
         </header>
 
-        <div class="program-tabs" role="tablist" aria-label="Program days">
-          <button
-            type="button"
-            class="program-tab is-active"
-            role="tab"
-            aria-selected="true"
-            aria-controls="day-1"
-            id="tab-day-1"
-            data-i18n="program.day1"
-          >
-            Day1 9.17(목)
-          </button>
-          <button
-            type="button"
-            class="program-tab"
-            role="tab"
-            aria-selected="false"
-            aria-controls="day-2"
-            id="tab-day-2"
-            data-i18n="program.day2"
-          >
-            Day2 9.18(금)
-          </button>
-        </div>
-
-        <div
-          class="program-panel"
-          id="day-1"
-          role="tabpanel"
-          aria-labelledby="tab-day-1"
-        >
+        <div class="program-panel" id="day-1">
           <div class="program-table-wrap">
             <table class="program-table">
               <thead>
                 <tr>
                   <th class="col-time" data-i18n="program.th.time">시간</th>
-                  <th class="col-cat" data-i18n="program.th.category">구분</th>
                   <th class="col-prog" data-i18n="program.th.program">
                     프로그램
                   </th>
@@ -181,30 +150,22 @@
                   </th>
                 </tr>
               </thead>
-                            <tbody>
+              <tbody>
                 <tr>
                   <td class="col-time">09:00~09:30</td>
-                  <td class="col-cat"></td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="하우스 오픈/참가자 등록"
                       data-en="Registration"
-                      >하우스 오픈/참가자 등록</span
-                    >
-                    <span
-                      class="prog-note"
-                      data-ko="VIP 사전환담 (09:45~10:00)"
-                      data-en="VIP Pre-meeting (09:45~10:00)"
-                      >VIP 사전환담 (09:45~10:00)</span
-                    >
+                      >하우스 오픈/참가자 등록</span>
                   </td>
                   <td class="col-speaker"></td>
                 </tr>
 
                 <tr class="is-section">
                   <td
-                    colspan="4"
+                    colspan="3"
                     data-ko="개회식"
                     data-en="Opening"
                   >
@@ -214,66 +175,66 @@
 
                 <tr>
                   <td class="col-time">09:30~09:43</td>
-                  <td class="col-cat"></td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="개회"
-                      data-en="Opening Announcement"
-                      >개회</span
-                    >
+                      data-en="Opening"
+                      >개회</span>
                   </td>
                   <td class="col-speaker"></td>
                 </tr>
+
                 <tr>
                   <td class="col-time">09:43~09:50</td>
-                  <td class="col-cat"></td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="오프닝 세레머니 및 단체사진"
                       data-en="Opening Ceremony &amp; Group Photo"
-                      >오프닝 세레머니 및 단체사진</span
-                    >
+                      >오프닝 세레머니 및 단체사진</span>
                   </td>
-                  <td class="col-speaker">-</td>
+                  <td class="col-speaker"></td>
                 </tr>
+
                 <tr>
                   <td class="col-time">09:50~09:55</td>
-                  <td class="col-cat"></td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="오프닝 퍼포먼스"
                       data-en="Opening Performance"
-                      >오프닝 퍼포먼스</span
-                    >
+                      >오프닝 퍼포먼스</span>
                   </td>
-                  <td class="col-speaker">
-                    크리아트 컴퍼니 LED 대북 퍼포먼스
-                  </td>
+                  <td class="col-speaker"></td>
                 </tr>
+
                 <tr>
                   <td class="col-time">09:55~10:20</td>
-                  <td class="col-cat">
-                    <span class="cat-keynote" data-i18n="program.cat.keynote"
-                      >기조연설</span
-                    >
-                  </td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="기조연설"
                       data-en="Keynote Speech"
-                      >기조연설</span
-                    >
+                      >기조연설</span>
+                    <span
+                      class="prog-note"
+                      data-ko="주제 : 거대도시 서울의 위기관리 현황과 전망"
+                      data-en="Topic: Crisis Management in Megacity Seoul: Current Challenges and Future Prospects Insight"
+                      >주제 : 거대도시 서울의 위기관리 현황과 전망</span>
                   </td>
-                  <td class="col-speaker">서울시립대학교 윤명오 교수</td>
+                  <td
+                    class="col-speaker"
+                    data-ko="윤명오 서울시립대학교 교수"
+                    data-en="Myong-o YOON, Professor Emeritus, University of SEOUL (BKL)"
+                  >
+                    윤명오 서울시립대학교 교수
+                  </td>
                 </tr>
 
                 <tr class="is-section">
                   <td
-                    colspan="4"
+                    colspan="3"
                     data-ko="[세션1] 기후위기 대응을 위한 재난관리 전략"
                     data-en="[Session 1] Climate Crisis and Resilience"
                   >
@@ -283,100 +244,109 @@
 
                 <tr>
                   <td class="col-time">10:20~10:25</td>
-                  <td class="col-cat">
-                    <span
-                      class="cat-session"
-                      data-ko="세션1"
-                      data-en="Session 1"
-                      >세션1</span
-                    >
-                  </td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="세션1 소개"
                       data-en="Session Introduction"
-                      >세션1 소개</span
-                    >
+                      >세션1 소개</span>
                   </td>
                   <td class="col-speaker"></td>
                 </tr>
+
                 <tr>
-                  <td class="col-time">10:25~11:15</td>
-                  <td class="col-cat">
-                    <span
-                      class="cat-session"
-                      data-ko="세션1"
-                      data-en="Session 1"
-                      >세션1</span
-                    >
-                  </td>
+                  <td class="col-time">10:25~10:35</td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
-                      data-ko="세션1 발표"
-                      data-en="Presentations by Participating Cities"
-                      >세션1 발표</span
-                    >
+                      data-ko="세션1-1 발표"
+                      data-en="Session 1-1 Presentation"
+                      >세션1-1 발표</span>
                   </td>
-                  <td class="col-speaker"></td>
+                  <td class="col-speaker">-</td>
                 </tr>
+
+                <tr>
+                  <td class="col-time">10:35~10:45</td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션1-2 발표"
+                      data-en="Session 1-2 Presentation"
+                      >세션1-2 발표</span>
+                  </td>
+                  <td class="col-speaker">-</td>
+                </tr>
+
+                <tr>
+                  <td class="col-time">10:45~10:55</td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션1-3 발표"
+                      data-en="Session 1-3 Presentation"
+                      >세션1-3 발표</span>
+                  </td>
+                  <td class="col-speaker">-</td>
+                </tr>
+
+                <tr>
+                  <td class="col-time">10:55~11:05</td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션1-4 발표"
+                      data-en="Session 1-4 Presentation"
+                      >세션1-4 발표</span>
+                  </td>
+                  <td class="col-speaker">-</td>
+                </tr>
+
+                <tr>
+                  <td class="col-time">11:05~11:15</td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션1-5 발표"
+                      data-en="Session 1-5 Presentation"
+                      >세션1-5 발표</span>
+                  </td>
+                  <td class="col-speaker">-</td>
+                </tr>
+
                 <tr>
                   <td class="col-time">11:15~11:40</td>
-                  <td class="col-cat">
-                    <span
-                      class="cat-session"
-                      data-ko="세션1"
-                      data-en="Session 1"
-                      >세션1</span
-                    >
-                  </td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="질의응답 및 종합토론"
                       data-en="Q&amp;A and Discussion"
-                      >질의응답 및 종합토론</span
-                    >
+                      >질의응답 및 종합토론</span>
                   </td>
                   <td
                     class="col-speaker"
-                    data-ko="좌장 : 광주대학교 송창영 교수"
-                    data-en="Moderator: 광주대학교 송창영 교수"
+                    data-ko="좌장 : 송창영 광주대학교 교수"
+                    data-en="Moderator: Chang-young Song, Professor, Gwangju University"
                   >
-                    좌장 : 광주대학교 송창영 교수
+                    좌장 : 송창영 광주대학교 교수
                   </td>
                 </tr>
+
                 <tr>
                   <td class="col-time">11:40~13:00</td>
-                  <td class="col-cat"></td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="오찬"
-                      data-en="Luncheon"
-                      >오찬</span
-                    >
-                  </td>
-                  <td class="col-speaker"></td>
-                </tr>
-                <tr>
-                  <td class="col-time">13:00~13:05</td>
-                  <td class="col-cat"></td>
-                  <td class="col-prog">
-                    <span
-                      class="prog-title"
-                      data-ko="주제영상 상영"
-                      data-en="Theme Video Screening"
-                      >주제영상 상영</span
-                    >
+                      data-en="Lunch"
+                      >오찬</span>
                   </td>
                   <td class="col-speaker"></td>
                 </tr>
 
                 <tr class="is-section">
                   <td
-                    colspan="4"
+                    colspan="3"
                     data-ko="[세션2] 국제공조를 통한 재난대응 역량강화"
                     data-en="[Session 2] International Cooperation in Crisis Response"
                   >
@@ -385,75 +355,74 @@
                 </tr>
 
                 <tr>
-                  <td class="col-time">13:05~13:10</td>
-                  <td class="col-cat">
+                  <td class="col-time">13:00~13:05</td>
+                  <td class="col-prog">
                     <span
-                      class="cat-session"
-                      data-ko="세션2"
-                      data-en="Session 2"
-                      >세션2</span
-                    >
+                      class="prog-title"
+                      data-ko="주제영상 상영"
+                      data-en="Theme Video Screening"
+                      >주제영상 상영</span>
                   </td>
+                  <td class="col-speaker"></td>
+                </tr>
+
+                <tr>
+                  <td class="col-time">13:05~13:10</td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="세션2 소개"
                       data-en="Session Introduction"
-                      >세션2 소개</span
-                    >
+                      >세션2 소개</span>
                   </td>
                   <td class="col-speaker"></td>
                 </tr>
+
                 <tr>
-                  <td class="col-time">13:10~13:30</td>
-                  <td class="col-cat">
-                    <span
-                      class="cat-session"
-                      data-ko="세션2"
-                      data-en="Session 2"
-                      >세션2</span
-                    >
-                  </td>
+                  <td class="col-time">13:10~13:20</td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
-                      data-ko="세션2 발표"
-                      data-en="Presentations by Participating Cities"
-                      >세션2 발표</span
-                    >
+                      data-ko="세션2-1 발표"
+                      data-en="Session 2-1 Presentation"
+                      >세션2-1 발표</span>
                   </td>
-                  <td class="col-speaker"></td>
+                  <td class="col-speaker">-</td>
                 </tr>
+
+                <tr>
+                  <td class="col-time">13:20~13:30</td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션2-2 발표"
+                      data-en="Session 2-2 Presentation"
+                      >세션2-2 발표</span>
+                  </td>
+                  <td class="col-speaker">-</td>
+                </tr>
+
                 <tr>
                   <td class="col-time">13:30~13:50</td>
-                  <td class="col-cat">
-                    <span
-                      class="cat-session"
-                      data-ko="세션2"
-                      data-en="Session 2"
-                      >세션2</span
-                    >
-                  </td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="질의응답 및 종합토론"
                       data-en="Q&amp;A and Discussion"
-                      >질의응답 및 종합토론</span
-                    >
+                      >질의응답 및 종합토론</span>
                   </td>
                   <td
                     class="col-speaker"
-                    data-ko="좌장 : 원광대학교 양기근 교수"
-                    data-en="Moderator: 원광대학교 양기근 교수"
+                    data-ko="좌장 : 양기근 원광대학교 교수"
+                    data-en="Moderator: Gi Geun Yang, Professor, Wonkwang University"
                   >
-                    좌장 : 원광대학교 양기근 교수
+                    좌장 : 양기근 원광대학교 교수
                   </td>
                 </tr>
 
                 <tr class="is-section">
                   <td
-                    colspan="4"
+                    colspan="3"
                     data-ko="[세션3] 데이터 기반 디지털 재난관리 체계"
                     data-en="[Session 3] AI and Digital Technologies in Crisis Management"
                   >
@@ -463,87 +432,97 @@
 
                 <tr>
                   <td class="col-time">13:50~13:55</td>
-                  <td class="col-cat">
-                    <span
-                      class="cat-session"
-                      data-ko="세션3"
-                      data-en="Session 3"
-                      >세션3</span
-                    >
-                  </td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="세션3 소개"
                       data-en="Session Introduction"
-                      >세션3 소개</span
-                    >
+                      >세션3 소개</span>
                   </td>
                   <td class="col-speaker"></td>
                 </tr>
+
                 <tr>
-                  <td class="col-time">13:55~14:35</td>
-                  <td class="col-cat">
-                    <span
-                      class="cat-session"
-                      data-ko="세션3"
-                      data-en="Session 3"
-                      >세션3</span
-                    >
-                  </td>
+                  <td class="col-time">13:55~14:05</td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
-                      data-ko="세션3 발표"
-                      data-en="Presentations by Participating Cities"
-                      >세션3 발표</span
-                    >
+                      data-ko="세션3-1 발표"
+                      data-en="Session 3-1 Presentation"
+                      >세션3-1 발표</span>
                   </td>
-                  <td class="col-speaker"></td>
+                  <td class="col-speaker">-</td>
                 </tr>
+
+                <tr>
+                  <td class="col-time">14:05~14:15</td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션3-2 발표"
+                      data-en="Session 3-2 Presentation"
+                      >세션3-2 발표</span>
+                  </td>
+                  <td class="col-speaker">-</td>
+                </tr>
+
+                <tr>
+                  <td class="col-time">14:15~14:25</td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션3-3 발표"
+                      data-en="Session 3-3 Presentation"
+                      >세션3-3 발표</span>
+                  </td>
+                  <td class="col-speaker">-</td>
+                </tr>
+
+                <tr>
+                  <td class="col-time">14:25~14:35</td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션3-4 발표"
+                      data-en="Session 3-4 Presentation"
+                      >세션3-4 발표</span>
+                  </td>
+                  <td class="col-speaker">-</td>
+                </tr>
+
                 <tr>
                   <td class="col-time">14:35~14:55</td>
-                  <td class="col-cat">
-                    <span
-                      class="cat-session"
-                      data-ko="세션3"
-                      data-en="Session 3"
-                      >세션3</span
-                    >
-                  </td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="질의응답 및 종합토론"
                       data-en="Q&amp;A and Discussion"
-                      >질의응답 및 종합토론</span
-                    >
+                      >질의응답 및 종합토론</span>
                   </td>
                   <td
                     class="col-speaker"
-                    data-ko="좌장 : 선문대학교 김응석 교수"
-                    data-en="Moderator: 선문대학교 김응석 교수"
+                    data-ko="좌장 : 김응석 선문대학교 교수"
+                    data-en="Moderator: Eung Seok Kim, Professor, Sun Moon University"
                   >
-                    좌장 : 선문대학교 김응석 교수
+                    좌장 : 김응석 선문대학교 교수
                   </td>
                 </tr>
+
                 <tr>
                   <td class="col-time">14:55~15:30</td>
-                  <td class="col-cat"></td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
-                      data-ko="커피 브레이크"
-                      data-en="Coffee Break"
-                      >커피 브레이크</span
-                    >
+                      data-ko="브레이크 타임"
+                      data-en="Break Time"
+                      >브레이크 타임</span>
                   </td>
                   <td class="col-speaker"></td>
                 </tr>
 
                 <tr class="is-section">
                   <td
-                    colspan="4"
+                    colspan="3"
                     data-ko="[세션4] 도시별 대규모 재난관리 체계"
                     data-en="[Session 4] Urban Disaster Management Systems"
                   >
@@ -553,131 +532,90 @@
 
                 <tr>
                   <td class="col-time">15:30~15:35</td>
-                  <td class="col-cat">
-                    <span
-                      class="cat-session"
-                      data-ko="세션4"
-                      data-en="Session 4"
-                      >세션4</span
-                    >
-                  </td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="세션4 소개"
                       data-en="Session Introduction"
-                      >세션4 소개</span
-                    >
+                      >세션4 소개</span>
                   </td>
                   <td class="col-speaker"></td>
                 </tr>
+
                 <tr>
-                  <td class="col-time">15:35~15:55</td>
-                  <td class="col-cat">
-                    <span
-                      class="cat-session"
-                      data-ko="세션4"
-                      data-en="Session 4"
-                      >세션4</span
-                    >
-                  </td>
+                  <td class="col-time">15:35~15:45</td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
-                      data-ko="세션4 발표"
-                      data-en="Presentations by Participating Cities"
-                      >세션4 발표</span
-                    >
+                      data-ko="세션4-1 발표"
+                      data-en="Session 4-1 Presentation"
+                      >세션4-1 발표</span>
                   </td>
-                  <td class="col-speaker"></td>
+                  <td class="col-speaker">-</td>
                 </tr>
+
+                <tr>
+                  <td class="col-time">15:45~15:55</td>
+                  <td class="col-prog">
+                    <span
+                      class="prog-title"
+                      data-ko="세션4-2 발표"
+                      data-en="Session 4-2 Presentation"
+                      >세션4-2 발표</span>
+                  </td>
+                  <td class="col-speaker">-</td>
+                </tr>
+
                 <tr>
                   <td class="col-time">15:55~16:10</td>
-                  <td class="col-cat">
-                    <span
-                      class="cat-session"
-                      data-ko="세션4"
-                      data-en="Session 4"
-                      >세션4</span
-                    >
-                  </td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="질의응답 및 종합토론"
                       data-en="Q&amp;A and Discussion"
-                      >질의응답 및 종합토론</span
-                    >
+                      >질의응답 및 종합토론</span>
                   </td>
                   <td
                     class="col-speaker"
-                    data-ko="좌장 : 서울시립대학교 함승희 교수"
-                    data-en="Moderator: 서울시립대학교 함승희 교수"
+                    data-ko="좌장 : 함승희 서울시립대학교 교수"
+                    data-en="Moderator: Haam Sunnie, Professor, University of SEOUL"
                   >
-                    좌장 : 서울시립대학교 함승희 교수
+                    좌장 : 함승희 서울시립대학교 교수
                   </td>
                 </tr>
+
                 <tr>
                   <td class="col-time">16:10~16:15</td>
-                  <td class="col-cat"></td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="성과 공유"
                       data-en="Annual Report from Secretariat"
-                      >성과 공유</span
-                    >
+                      >성과 공유</span>
                   </td>
-                  <td
-                    class="col-speaker"
-                    data-ko="일본 사무국"
-                    data-en="Japan Secretariat"
-                  >
-                    일본 사무국
-                  </td>
+                  <td class="col-speaker">-</td>
                 </tr>
+
                 <tr>
                   <td class="col-time">16:15~16:25</td>
-                  <td class="col-cat"></td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="차기 개최 도시 발표 및 차기 개최 도시 연설"
                       data-en="Announcement of the Next Host City &amp; Address by the Next Host City"
-                      >차기 개최 도시 발표 및 차기 개최 도시 연설</span
-                    >
+                      >차기 개최 도시 발표 및 차기 개최 도시 연설</span>
                   </td>
-                  <td
-                    class="col-speaker"
-                    data-ko="일본 사무국"
-                    data-en="Japan Secretariat"
-                  >
-                    일본 사무국
-                  </td>
+                  <td class="col-speaker">-</td>
                 </tr>
+
                 <tr>
                   <td class="col-time">16:25~16:30</td>
-                  <td class="col-cat"></td>
                   <td class="col-prog">
                     <span
                       class="prog-title"
                       data-ko="폐회"
-                      data-en="Closing Address"
-                      >폐회</span
-                    >
-                  </td>
-                  <td class="col-speaker"></td>
-                </tr>
-                <tr>
-                  <td class="col-time">17:00~19:00</td>
-                  <td class="col-cat"></td>
-                  <td class="col-prog">
-                    <span
-                      class="prog-title"
-                      data-ko="VIP 만찬"
-                      data-en="VIP Dinner"
-                      >VIP 만찬</span
-                    >
+                      data-en="Closing"
+                      >폐회</span>
                   </td>
                   <td class="col-speaker"></td>
                 </tr>
@@ -688,19 +626,7 @@
             * 상기 프로그램은 사정에 따라 변경될 수 있습니다.
           </p>
         </div>
-
-        <div
-          class="program-panel"
-          id="day-2"
-          role="tabpanel"
-          aria-labelledby="tab-day-2"
-          hidden
-        >
-          <div class="program-empty" data-i18n="program.empty">
-            Day2 프로그램은 추후 공개 예정입니다.
-          </div>
-        </div>
-      </section>
+        </section>
     </main>
 
     <footer class="site-footer">

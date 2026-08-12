@@ -59,18 +59,18 @@
 .overview-list {
   position: relative;
   z-index: 1;
-  width: 100%;
-  border-top: 1px solid #f0d9b0;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 .overview-row {
   display: grid;
-  grid-template-columns: 120px minmax(0, 1fr);
+  grid-template-columns: 120px max-content;
   column-gap: 36px;
   align-items: center;
   min-height: 72px;
-  padding: 18px 12px;
-  border-bottom: 1px solid #f0d9b0;
+  padding: 14px 0;
 }
 
 .overview-label {
@@ -96,7 +96,7 @@
 }
 
 .overview-value {
-  color: #222;
+  color: var(--color-navy);
   font-size: clamp(15px, 3vw, 22px);
   font-weight: 500;
   letter-spacing: -0.02em;
@@ -114,11 +114,18 @@
     margin-bottom: 32px;
   }
 
+  .overview-list {
+    width: fit-content;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .overview-row {
-    grid-template-columns: 1fr;
-    gap: 10px;
+    grid-template-columns: 108px max-content;
+    column-gap: 16px;
     min-height: 0;
-    padding: 16px 4px;
+    padding: 12px 0;
   }
 
   .overview-label {
@@ -130,5 +137,6 @@
 
   .overview-value {
     font-size: 15px;
+    max-width: min(58vw, 280px);
   }
 }

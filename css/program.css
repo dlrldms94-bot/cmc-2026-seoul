@@ -26,35 +26,6 @@
   background: #e8890c;
 }
 
-.program-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 28px;
-}
-
-.program-tab {
-  min-width: 140px;
-  height: 44px;
-  padding: 0 22px;
-  border-radius: 10px;
-  color: #8a8a8a;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  transition: background 0.2s, color 0.2s;
-}
-
-.program-tab.is-active {
-  background: #ff8c02;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 140, 2, 1) 0%,
-    rgba(255, 179, 71, 1) 100%
-  );
-  color: #fff;
-}
-
 .program-panel[hidden] {
   display: none;
 }
@@ -93,41 +64,18 @@
 }
 
 .program-table .col-time {
-  width: 18%;
+  width: 22%;
   font-weight: 800;
   white-space: nowrap;
 }
 
-.program-table .col-cat {
-  width: 14%;
-}
-
 .program-table .col-prog {
-  width: 42%;
+  width: 48%;
 }
 
 .program-table .col-speaker {
-  width: 26%;
+  width: 30%;
   color: #5a6472;
-}
-
-.program-table .cat-keynote {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 72px;
-  height: 28px;
-  padding: 0 12px;
-  border-radius: 999px;
-  background: var(--color-navy);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.program-table .cat-session {
-  color: #e8890c;
-  font-weight: 800;
 }
 
 .program-table .prog-title {
@@ -145,7 +93,7 @@
 
 .program-table tr.is-section td {
   padding: 14px;
-  background: #fffaf3;
+  background: #fff4e5;
   color: #e8890c;
   font-size: 15px;
   font-weight: 800;
@@ -173,12 +121,6 @@
 
 @media (max-width: 860px) {
   .program-table {
-    min-width: 720px;
-  }
-
-  .program-tab {
-    min-width: 120px;
-    height: 40px;
-    font-size: 14px;
+    min-width: 640px;
   }
 }
