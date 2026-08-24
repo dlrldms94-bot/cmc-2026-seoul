@@ -219,11 +219,41 @@ const I18N = {
 const Locale = {
   key: "cmc-locale",
   current: "ko",
+  _initialized: false,
 
   init() {
-    const saved = localStorage.getItem(this.key);
-    this.current = saved === "en" || saved === "ko" ? saved : "ko";
+    const isHomePage =
+      /(?:^|\/)index\.html?$/.test(window.location.pathname) ||
+      window.location.pathname.endsWith("/");
+
+    if (isHomePage) {
+      this.current = "ko";
+      try {
+        localStorage.setItem(this.key, "ko");
+      } catch (err) {
+        /* ignore storage errors */
+      }
+    } else {
+      let saved;
+      try {
+        saved = localStorage.getItem(this.key);
+      } catch (err) {
+        saved = null;
+      }
+
+      this.current = saved === "en" ? "en" : "ko";
+
+      if (saved !== "en" && saved !== "ko") {
+        try {
+          localStorage.setItem(this.key, "ko");
+        } catch (err) {
+          /* ignore storage errors */
+        }
+      }
+    }
+
     this.apply();
+    this._initialized = true;
   },
 
   t(key) {
@@ -265,7 +295,19 @@ const Locale = {
 
   toggle() {
     this.current = this.current === "ko" ? "en" : "ko";
-    localStorage.setItem(this.key, this.current);
+    try {
+      localStorage.setItem(this.key, this.current);
+    } catch (err) {
+      /* ignore storage errors */
+    }
     this.apply();
   },
 };
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => Locale.init(), {
+    once: true,
+  });
+} else {
+  Locale.init();
+}

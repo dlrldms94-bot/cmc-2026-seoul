@@ -122,6 +122,10 @@
   width: min(100%, 180px);
   aspect-ratio: 1;
   border-radius: 50%;
+  overflow: hidden;
+}
+
+.speaker-photo:not(:has(img)) {
   background: #ff8c02;
   background: linear-gradient(
     145deg,

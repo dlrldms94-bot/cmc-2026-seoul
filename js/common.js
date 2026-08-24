@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-  Locale.init();
+  if (!Locale._initialized) {
+    Locale.init();
+  }
 
   const langBtn = document.getElementById("langToggle");
   if (langBtn) {
