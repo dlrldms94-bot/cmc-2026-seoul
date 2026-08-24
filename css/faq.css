@@ -109,6 +109,15 @@
   display: block;
 }
 
+.faq-answer p + p {
+  margin-top: 0.85em;
+}
+
+.faq-answer .faq-note {
+  color: #6b7280;
+  font-size: 14px;
+}
+
 .faq-actions {
   display: flex;
   justify-content: center;
