@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>프로그램 | 2026 CMC SEOUL</title>
+    <title>Program | 2026 CMC SEOUL</title>
     <meta
       name="description"
-      content="2026 위기관리회의 SEOUL 세부 프로그램 — 9월 17일(목)"
+      content="2026 CMC SEOUL program — September 17 (Thu)"
     />
     <link
       rel="stylesheet"
@@ -51,10 +51,10 @@
               </ul>
             </li>
             <li class="is-active">
-              <a href="schedule.html" data-i18n="nav.program">프로그램</a>
+              <a href="schedule-en.html" data-i18n="nav.program">프로그램</a>
               <ul class="submenu">
                 <li>
-                  <a href="schedule.html" data-i18n="nav.schedule">프로그램</a>
+                  <a href="schedule-en.html" data-i18n="nav.schedule">프로그램</a>
                 </li>
                 <li>
                   <a href="speakers.html" data-i18n="nav.speakers">연사소개</a>
@@ -88,11 +88,13 @@
 
         <div class="header-actions">
           <a
-            href="schedule-en.html"
+            href="schedule.html"
             class="lang-btn"
-            aria-label="Switch to English"
+            data-i18n="lang.toggle"
+            data-i18n-aria="lang.aria"
+            aria-label="한국어로 전환"
           >
-            ENGLISH
+            한국어
           </a>
           <button
             type="button"
@@ -116,7 +118,7 @@
           <nav class="breadcrumb" aria-label="Breadcrumb">
             <a href="../index.html" data-i18n="crumb.home">홈</a>
             <span class="sep" aria-hidden="true">&gt;</span>
-            <a href="schedule.html" data-i18n="nav.program">프로그램</a>
+            <a href="schedule-en.html" data-i18n="nav.program">프로그램</a>
             <span class="sep" aria-hidden="true">&gt;</span>
             <span class="current" data-i18n="nav.schedule" aria-current="page"
               >프로그램</span
@@ -673,7 +675,7 @@
 
     <script>
       try {
-        localStorage.setItem("cmc-locale", "ko");
+        localStorage.setItem("cmc-locale", "en");
       } catch (err) {
         /* ignore storage errors */
       }
