@@ -46,8 +46,8 @@ const I18N = {
     "overview.label.content": "주요내용",
     "overview.label.lang": "공식언어",
     "overview.value.name": "2026 위기관리회의 SEOUL",
-    "overview.value.date": "2026년 9월 17일(목) - 9월 18일(금)",
-    "overview.value.venue": "호텔나루 엠갤러리 및 여의도공원 일대 등",
+    "overview.value.date": "2026년 9월 17일(목)",
+    "overview.value.venue": "호텔나루 엠갤러리",
     "overview.value.host": "서울특별시",
     "overview.value.content": "기조연설, 세션 발표, 패널 토론, 전시, 네트워킹 등",
     "overview.value.lang": "한국어, 영어 (동시통역 제공)",
@@ -151,9 +151,8 @@ const I18N = {
     "overview.label.content": "Program",
     "overview.label.lang": "Language",
     "overview.value.name": "2026 Crisis Management Conference SEOUL",
-    "overview.value.date": "September 17 (Thu) – 18 (Fri), 2026",
-    "overview.value.venue":
-      "Hotel Naru Seoul MGallery and Yeouido Park area, etc.",
+    "overview.value.date": "September 17 (Thu), 2026",
+    "overview.value.venue": "Hotel Naru Seoul MGallery",
     "overview.value.host": "Seoul Metropolitan Government",
     "overview.value.content":
       "Keynote, session presentations, panel discussions, exhibition, networking, etc.",

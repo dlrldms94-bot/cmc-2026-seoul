@@ -1,9 +1,13 @@
 /* 모시는 글 */
+.page-content.greeting-content {
+  max-width: 1000px;
+}
+
 .welcome {
   position: relative;
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 48px;
+  grid-template-columns: minmax(0, 1fr) min(320px, 34%);
+  gap: 24px;
   align-items: start;
   padding: 8px 0 24px;
 }
@@ -47,45 +51,21 @@
   font-weight: 800;
 }
 
-.welcome-sign {
-  margin-top: 40px;
-  font-size: 18px;
-  font-weight: 700;
-  color: #111;
-  letter-spacing: -0.02em;
-}
-
-.welcome-sign .name {
-  margin-left: 6px;
-  color: var(--color-navy);
-  font-size: clamp(24px, 2.6vw, 30px);
-  font-weight: 800;
-  letter-spacing: 0.12em;
-}
-
-html[data-locale="en"] .welcome-sign {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-}
-
-html[data-locale="en"] .welcome-sign .name {
-  margin-left: 0;
-  letter-spacing: 0.02em;
-}
-
 .welcome-photo {
   position: relative;
   z-index: 1;
-  justify-self: center;
-  width: min(360px, 100%);
-  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-self: start;
+  width: 100%;
+  max-width: 320px;
+  margin: 0;
 }
 
 .welcome-photo img {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 1;
   object-fit: cover;
   object-position: center top;
   border-radius: 50%;
@@ -94,15 +74,45 @@ html[data-locale="en"] .welcome-sign .name {
     0 12px 40px rgba(0, 0, 0, 0.12);
 }
 
+.welcome-sign {
+  width: 100%;
+  margin-top: 18px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.welcome-sign .role {
+  display: block;
+  line-height: 1.45;
+}
+
+.welcome-sign .name {
+  display: block;
+  margin-top: 8px;
+  color: var(--color-navy);
+  font-size: clamp(24px, 2.6vw, 30px);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-align: center;
+}
+
+html[data-locale="en"] .welcome-sign .name {
+  letter-spacing: 0.02em;
+}
+
 @media (max-width: 960px) {
   .welcome {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 32px;
   }
 
   .welcome-photo {
     order: -1;
-    width: min(280px, 70vw);
+    max-width: min(280px, 70vw);
+    margin-inline: auto;
   }
 
   .welcome-text {
