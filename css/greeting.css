@@ -58,8 +58,21 @@
 .welcome-sign .name {
   margin-left: 6px;
   color: var(--color-navy);
+  font-size: clamp(24px, 2.6vw, 30px);
   font-weight: 800;
   letter-spacing: 0.12em;
+}
+
+html[data-locale="en"] .welcome-sign {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+html[data-locale="en"] .welcome-sign .name {
+  margin-left: 0;
+  letter-spacing: 0.02em;
 }
 
 .welcome-photo {
