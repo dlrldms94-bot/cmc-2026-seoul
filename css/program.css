@@ -100,6 +100,27 @@
   border-bottom: 1px solid #f0d9b0;
 }
 
+.program-session-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.program-session-link:hover,
+.program-session-link:focus-visible {
+  color: #c56f00;
+  text-decoration: underline;
+}
+
+.program-table tr.is-section.is-session-link:hover td {
+  background: #ffeed4;
+}
+
+.program-table .prog-title .program-session-link {
+  display: inline;
+}
+
 .program-empty {
   padding: 64px 20px;
   text-align: center;

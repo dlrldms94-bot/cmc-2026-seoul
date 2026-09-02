@@ -40,7 +40,7 @@ const I18N = {
     "greeting.body":
       "<p>더 안전한 미래는 한 도시의 노력만으로 만들어질 수 없습니다.<br />서로의 경험을 나누고 지혜를 모으며,<br />협력의 범위를 넓혀갈 때<br />더욱 안전하고 회복력 있는 도시를 만들어 갈 수 있습니다.</p><p><strong>「2026 위기관리회의 SEOUL」</strong>은<br />국내외 재난안전 분야의 정책과 우수사례를 공유하고,<br />미래 재난환경에 대응하기 위한 새로운 협력의 방향을<br />함께 만들어가는 국제 교류의 장입니다.</p><p>바쁘신 일정에도 귀한 걸음 하시어<br />축적된 경험과 깊은 통찰을 나누어 주신다면<br />모두에게 더욱 뜻깊고 가치 있는 시간이 될 것입니다.</p><p>부디 참석하시어 자리를 빛내 주시기를 진심으로 부탁드립니다.</p><p>감사합니다.</p>",
     "overview.label.name": "행사명",
-    "overview.label.date": "일시",
+    "overview.label.date": "일자",
     "overview.label.venue": "장소",
     "overview.label.host": "주최",
     "overview.label.content": "주요내용",
@@ -60,7 +60,7 @@ const I18N = {
       "<p><span class=\"hl\">위기관리회의(Crisis Management Conference)</span>는 위기관리 네트워크의 핵심 프로젝트로 매년 개최되고 있습니다.</p><p>본 회의는 참여 도시의 위기관리 실무자들이 한자리에 모여 최신 재난예방 계획, 재난 대응 사례, 위기관리 정책 및 첨단기술 활용 사례 등을 공유하고, 도시 간 협력체계를 더욱 강화하는 것을 목적으로 합니다.</p><p>또한, 회의를 통해 축적된 지식과 우수사례를 각 도시의 정책과 운영에 반영함으로써 시민의 안전과 안심을 증진하는 데 기여하는 것을 목표로 하고 있습니다.</p>",
     "location.venue": "호텔나루 엠갤러리 2F 나루볼룸",
     "location.label.address": "주소",
-    "location.label.hours": "운영시간",
+    "location.label.hours": "운영기간",
     "location.label.contact": "문의처",
     "location.value.address": "서울 마포구 마포대로 8 호텔 나루 서울 엠갤러리",
     "location.value.hours": "2026. 9. 17.(목) ~ 9. 18.(금)",
@@ -166,7 +166,7 @@ const I18N = {
       "<p>The <span class=\"hl\">Crisis Management Conference</span> is a core project of the network and is held annually.</p><p>The conference brings together crisis management practitioners from participating cities to share the latest disaster prevention plans, response cases, policies, and advanced technology applications, with the aim of further strengthening inter-city cooperation.</p><p>It also seeks to enhance the safety and peace of mind of citizens by reflecting accumulated knowledge and best practices in each city’s policies and operations.</p>",
     "location.venue": "Hotel Naru MGallery 2F Naru Ballroom",
     "location.label.address": "Address",
-    "location.label.hours": "Hours",
+    "location.label.hours": "Date",
     "location.label.contact": "Contact",
     "location.value.address": "8 Mapo-daero, Mapo-gu, Seoul, Hotel Naru Seoul MGallery",
     "location.value.hours": "Sep. 17 (Thu) – Sep. 18 (Fri), 2026",
@@ -289,6 +289,29 @@ const Locale = {
     document.querySelectorAll("[data-i18n-title]").forEach((el) => {
       const key = el.getAttribute("data-i18n-title");
       el.setAttribute("title", this.t(key));
+    });
+
+    this.updateScheduleLinks();
+  },
+
+  updateScheduleLinks() {
+    const target =
+      this.current === "en" ? "schedule-en.html" : "schedule.html";
+
+    document.querySelectorAll("a[href]").forEach((link) => {
+      if (link.classList.contains("lang-btn")) {
+        return;
+      }
+
+      const href = link.getAttribute("href");
+      if (!href || !/(^|\/)schedule(-en)?\.html(\?|#|$)/.test(href)) {
+        return;
+      }
+
+      const next = href.replace(/schedule(-en)?\.html/, target);
+      if (next !== href) {
+        link.setAttribute("href", next);
+      }
     });
   },
 
