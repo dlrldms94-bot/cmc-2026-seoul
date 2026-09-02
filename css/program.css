@@ -1,4 +1,6 @@
 /* 프로그램 */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap");
+
 .program-content {
   max-width: 1200px;
 }
@@ -65,6 +67,7 @@
 
 .program-table .col-time {
   width: 22%;
+  font-family: "Noto Sans KR", sans-serif;
   font-weight: 800;
   white-space: nowrap;
 }
