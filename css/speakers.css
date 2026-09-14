@@ -125,6 +125,10 @@
   grid-template-columns: repeat(4, 1fr);
 }
 
+.speakers-grid:has(> .speaker-card:nth-child(5):last-child) {
+  grid-template-columns: repeat(5, 1fr);
+}
+
 .speaker-photo {
   width: min(100%, 180px);
   aspect-ratio: 1;
@@ -176,7 +180,8 @@
 
 @media (max-width: 1024px) {
   .speakers-grid:has(> .speaker-card:nth-child(3):last-child),
-  .speakers-grid:has(> .speaker-card:nth-child(4):last-child) {
+  .speakers-grid:has(> .speaker-card:nth-child(4):last-child),
+  .speakers-grid:has(> .speaker-card:nth-child(5):last-child) {
     grid-template-columns: repeat(2, 1fr);
     gap: 40px 32px;
   }
