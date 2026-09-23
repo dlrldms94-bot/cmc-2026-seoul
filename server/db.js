@@ -178,8 +178,19 @@ async function initDatabase() {
       caption_ko TEXT NOT NULL DEFAULT '',
       caption_en TEXT NOT NULL DEFAULT '',
       sort_order INTEGER NOT NULL DEFAULT 0,
+      mime_type TEXT NOT NULL DEFAULT 'image/jpeg',
+      file_data BYTEA,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
+  `);
+
+  await pool.query(`
+    ALTER TABLE archive_photos
+    ADD COLUMN IF NOT EXISTS mime_type TEXT NOT NULL DEFAULT 'image/jpeg'
+  `);
+  await pool.query(`
+    ALTER TABLE archive_photos
+    ADD COLUMN IF NOT EXISTS file_data BYTEA
   `);
 
   await seedNoticesIfEmpty();
@@ -475,7 +486,8 @@ async function listArchivePhotos() {
     return sortArchivePhotos(readArchivePhotosJson().map(normalizeArchivePhoto));
   }
   const result = await pool.query(
-    "SELECT * FROM archive_photos ORDER BY sort_order ASC, id DESC"
+    `SELECT id, filename, caption_ko, caption_en, sort_order, mime_type, created_at
+     FROM archive_photos ORDER BY sort_order ASC, id DESC`
   );
   return sortArchivePhotos(result.rows.map(mapArchivePhotoRow));
 }
@@ -512,6 +524,8 @@ async function createArchivePhoto(payload) {
   if (!filename) throw new Error("filename is required");
   const captionKo = String(payload.captionKo || "").trim();
   const captionEn = String(payload.captionEn || "").trim() || captionKo;
+  const mimeType = String(payload.mimeType || "image/jpeg").trim() || "image/jpeg";
+  const fileData = payload.fileData ? Buffer.from(payload.fileData) : null;
   const sortOrder =
     payload.sortOrder !== undefined
       ? Number(payload.sortOrder) || 0
@@ -520,26 +534,55 @@ async function createArchivePhoto(payload) {
 
   if (useJson) {
     const list = readArchivePhotosJson();
-    const item = normalizeArchivePhoto({
+    const record = {
       id: `a${Date.now()}${Math.random().toString(36).slice(2, 6)}`,
       filename,
       captionKo,
       captionEn,
       sortOrder,
+      mimeType,
+      fileDataBase64: fileData ? fileData.toString("base64") : "",
       createdAt: now,
-    });
-    list.push(item);
+    };
+    list.push(record);
     writeArchivePhotosJson(list);
-    return item;
+    return normalizeArchivePhoto(record);
   }
 
   const result = await pool.query(
-    `INSERT INTO archive_photos (filename, caption_ko, caption_en, sort_order, created_at)
-     VALUES ($1, $2, $3, $4, NOW())
-     RETURNING *`,
-    [filename, captionKo, captionEn, sortOrder]
+    `INSERT INTO archive_photos (
+      filename, caption_ko, caption_en, sort_order, mime_type, file_data, created_at
+    ) VALUES ($1, $2, $3, $4, $5, $6, NOW())
+     RETURNING id, filename, caption_ko, caption_en, sort_order, mime_type, created_at`,
+    [filename, captionKo, captionEn, sortOrder, mimeType, fileData]
   );
   return mapArchivePhotoRow(result.rows[0]);
+}
+
+async function getArchivePhotoFile(id) {
+  if (useJson) {
+    const raw = readArchivePhotosJson().find((p) => String(p.id) === String(id));
+    if (!raw) return null;
+    const base64 = raw.fileDataBase64 || raw.file_data_base64 || "";
+    if (!base64) return null;
+    return {
+      filename: String(raw.filename || "photo.jpg"),
+      mimeType: String(raw.mimeType || raw.mime_type || "image/jpeg"),
+      fileData: Buffer.from(base64, "base64"),
+    };
+  }
+
+  const result = await pool.query(
+    "SELECT filename, mime_type, file_data FROM archive_photos WHERE id = $1",
+    [id]
+  );
+  const row = result.rows[0];
+  if (!row?.file_data) return null;
+  return {
+    filename: row.filename,
+    mimeType: row.mime_type || "image/jpeg",
+    fileData: row.file_data,
+  };
 }
 
 async function deleteArchivePhoto(id) {
@@ -569,6 +612,7 @@ module.exports = {
   listInquiries,
   listArchivePhotos,
   getArchivePhoto,
+  getArchivePhotoFile,
   createArchivePhoto,
   deleteArchivePhoto,
 };

@@ -75,6 +75,13 @@ function requireArchiveAuth(req, res, next) {
   next();
 }
 
+function requireArchiveOrAdmin(req, res, next) {
+  if (isArchiveAuthed(req) || isAuthed(req)) {
+    return next();
+  }
+  return res.status(401).json({ error: "Unauthorized" });
+}
+
 function ensureArchiveUploadDir() {
   if (!fs.existsSync(ARCHIVE_UPLOAD_DIR)) {
     fs.mkdirSync(ARCHIVE_UPLOAD_DIR, { recursive: true });
@@ -84,19 +91,7 @@ function ensureArchiveUploadDir() {
 ensureArchiveUploadDir();
 
 const archiveUpload = multer({
-  storage: multer.diskStorage({
-    destination: (_req, _file, cb) => {
-      ensureArchiveUploadDir();
-      cb(null, ARCHIVE_UPLOAD_DIR);
-    },
-    filename: (_req, file, cb) => {
-      const ext = path.extname(file.originalname || "").toLowerCase();
-      const safeExt = [".jpg", ".jpeg", ".png", ".webp", ".gif"].includes(ext)
-        ? ext
-        : ".jpg";
-      cb(null, `${Date.now()}-${crypto.randomBytes(8).toString("hex")}${safeExt}`);
-    },
-  }),
+  storage: multer.memoryStorage(),
   limits: { fileSize: 8 * 1024 * 1024, files: 24 },
   fileFilter: (_req, file, cb) => {
     if (file.mimetype && file.mimetype.startsWith("image/")) {
@@ -196,8 +191,27 @@ app.get("/api/archive/me", (req, res) => {
 function mapArchivePhotoUrls(list) {
   return list.map((item) => ({
     ...item,
-    url: `/uploads/archive/${encodeURIComponent(item.filename)}`,
+    url: `/api/archive/photos/${encodeURIComponent(item.id)}/file`,
   }));
+}
+
+async function sendArchivePhotoFile(req, res) {
+  const file = await db.getArchivePhotoFile(req.params.id);
+  if (file?.fileData?.length) {
+    res.set("Content-Type", file.mimeType || "image/jpeg");
+    res.set("Cache-Control", "private, max-age=3600");
+    return res.send(file.fileData);
+  }
+
+  const meta = await db.getArchivePhoto(req.params.id);
+  if (meta?.filename) {
+    const filePath = path.join(ARCHIVE_UPLOAD_DIR, meta.filename);
+    if (fs.existsSync(filePath)) {
+      return res.sendFile(filePath);
+    }
+  }
+
+  return res.status(404).send("Not found");
 }
 
 app.get(
@@ -218,6 +232,12 @@ app.get(
   })
 );
 
+app.get(
+  "/api/archive/photos/:id/file",
+  requireArchiveOrAdmin,
+  handleAsync(async (req, res) => sendArchivePhotoFile(req, res))
+);
+
 app.post(
   "/api/archive/photos",
   requireAdmin,
@@ -231,15 +251,19 @@ app.post(
     const captionEn = String(req.body?.captionEn || "").trim();
     const created = [];
     for (const file of files) {
+      const ext = path.extname(file.originalname || "").toLowerCase();
+      const safeExt = [".jpg", ".jpeg", ".png", ".webp", ".gif"].includes(ext)
+        ? ext
+        : ".jpg";
+      const filename = `${Date.now()}-${crypto.randomBytes(8).toString("hex")}${safeExt}`;
       const item = await db.createArchivePhoto({
-        filename: file.filename,
+        filename,
         captionKo,
         captionEn: captionEn || captionKo,
+        mimeType: file.mimetype || "image/jpeg",
+        fileData: file.buffer,
       });
-      created.push({
-        ...item,
-        url: `/uploads/archive/${encodeURIComponent(item.filename)}`,
-      });
+      created.push(...mapArchivePhotoUrls([item]));
     }
     res.status(201).json(created);
   })
