@@ -108,6 +108,41 @@
           </p>
           <div class="admin-list" id="inquiryList"></div>
         </div>
+
+        <div class="admin-card admin-archive">
+          <h2 class="admin-panel-title">아카이브 사진 갤러리</h2>
+          <p class="admin-hint">
+            업로드한 사진은 아카이브 페이지(비밀번호 입장 후)에 표시됩니다.
+            <a href="../archive/index.html">아카이브 페이지 보기</a>
+          </p>
+          <form id="archiveUploadForm">
+            <div class="admin-field">
+              <label for="archiveCaptionKo">설명 (한국어, 선택)</label>
+              <input id="archiveCaptionKo" />
+            </div>
+            <div class="admin-field">
+              <label for="archiveCaptionEn">설명 (English, optional)</label>
+              <input id="archiveCaptionEn" />
+            </div>
+            <div class="admin-field">
+              <label for="archivePhotos">사진 파일 *</label>
+              <input
+                id="archivePhotos"
+                type="file"
+                accept="image/*"
+                multiple
+                required
+              />
+            </div>
+            <div class="admin-form-actions">
+              <button type="submit" class="admin-btn admin-btn-primary" id="archiveUploadBtn">
+                사진 업로드
+              </button>
+            </div>
+            <p class="admin-error" id="archiveUploadError" hidden></p>
+          </form>
+          <div class="admin-list admin-archive-list" id="archivePhotoList"></div>
+        </div>
       </section>
     </div>
 

@@ -7,3 +7,5 @@
 .netlify/
 .vercel/
 node_modules/
+data/archive/photos/*
+!data/archive/photos/.gitkeep

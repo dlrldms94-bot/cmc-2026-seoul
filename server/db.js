@@ -171,6 +171,17 @@ async function initDatabase() {
     )
   `);
 
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS archive_photos (
+      id SERIAL PRIMARY KEY,
+      filename TEXT NOT NULL,
+      caption_ko TEXT NOT NULL DEFAULT '',
+      caption_en TEXT NOT NULL DEFAULT '',
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `);
+
   await seedNoticesIfEmpty();
   console.log("[db] PostgreSQL 연결 완료");
 }
@@ -400,6 +411,152 @@ async function listInquiries() {
   );
 }
 
+const ARCHIVE_PHOTOS_FILE = path.join(
+  __dirname,
+  "..",
+  "data",
+  "archive-photos.json"
+);
+
+function ensureArchivePhotosFile() {
+  const dir = path.dirname(ARCHIVE_PHOTOS_FILE);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  if (!fs.existsSync(ARCHIVE_PHOTOS_FILE)) {
+    fs.writeFileSync(ARCHIVE_PHOTOS_FILE, "[]", "utf8");
+  }
+}
+
+function readArchivePhotosJson() {
+  ensureArchivePhotosFile();
+  try {
+    const data = JSON.parse(fs.readFileSync(ARCHIVE_PHOTOS_FILE, "utf8"));
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeArchivePhotosJson(list) {
+  ensureArchivePhotosFile();
+  fs.writeFileSync(ARCHIVE_PHOTOS_FILE, JSON.stringify(list, null, 2), "utf8");
+}
+
+function normalizeArchivePhoto(item) {
+  return {
+    id: String(item.id),
+    filename: String(item.filename || "").trim(),
+    captionKo: String(item.captionKo || item.caption_ko || "").trim(),
+    captionEn: String(item.captionEn || item.caption_en || "").trim(),
+    sortOrder: Number(item.sortOrder ?? item.sort_order ?? 0) || 0,
+    createdAt: formatIso(item.createdAt || item.created_at),
+  };
+}
+
+function mapArchivePhotoRow(row) {
+  return normalizeArchivePhoto({
+    id: row.id,
+    filename: row.filename,
+    captionKo: row.caption_ko,
+    captionEn: row.caption_en,
+    sortOrder: row.sort_order,
+    createdAt: row.created_at,
+  });
+}
+
+function sortArchivePhotos(list) {
+  return [...list].sort((a, b) => {
+    if (a.sortOrder !== b.sortOrder) return a.sortOrder - b.sortOrder;
+    return String(b.createdAt).localeCompare(String(a.createdAt));
+  });
+}
+
+async function listArchivePhotos() {
+  if (useJson) {
+    return sortArchivePhotos(readArchivePhotosJson().map(normalizeArchivePhoto));
+  }
+  const result = await pool.query(
+    "SELECT * FROM archive_photos ORDER BY sort_order ASC, id DESC"
+  );
+  return sortArchivePhotos(result.rows.map(mapArchivePhotoRow));
+}
+
+async function getArchivePhoto(id) {
+  if (useJson) {
+    const item = readArchivePhotosJson().find((p) => String(p.id) === String(id));
+    return item ? normalizeArchivePhoto(item) : null;
+  }
+  const result = await pool.query("SELECT * FROM archive_photos WHERE id = $1", [
+    id,
+  ]);
+  return result.rows[0] ? mapArchivePhotoRow(result.rows[0]) : null;
+}
+
+async function nextArchiveSortOrder() {
+  if (useJson) {
+    const list = readArchivePhotosJson();
+    return (
+      list.reduce(
+        (max, item) => Math.max(max, Number(item.sortOrder ?? item.sort_order) || 0),
+        0
+      ) + 1
+    );
+  }
+  const result = await pool.query(
+    "SELECT COALESCE(MAX(sort_order), 0)::int AS max_sort FROM archive_photos"
+  );
+  return result.rows[0].max_sort + 1;
+}
+
+async function createArchivePhoto(payload) {
+  const filename = String(payload.filename || "").trim();
+  if (!filename) throw new Error("filename is required");
+  const captionKo = String(payload.captionKo || "").trim();
+  const captionEn = String(payload.captionEn || "").trim() || captionKo;
+  const sortOrder =
+    payload.sortOrder !== undefined
+      ? Number(payload.sortOrder) || 0
+      : await nextArchiveSortOrder();
+  const now = new Date().toISOString();
+
+  if (useJson) {
+    const list = readArchivePhotosJson();
+    const item = normalizeArchivePhoto({
+      id: `a${Date.now()}${Math.random().toString(36).slice(2, 6)}`,
+      filename,
+      captionKo,
+      captionEn,
+      sortOrder,
+      createdAt: now,
+    });
+    list.push(item);
+    writeArchivePhotosJson(list);
+    return item;
+  }
+
+  const result = await pool.query(
+    `INSERT INTO archive_photos (filename, caption_ko, caption_en, sort_order, created_at)
+     VALUES ($1, $2, $3, $4, NOW())
+     RETURNING *`,
+    [filename, captionKo, captionEn, sortOrder]
+  );
+  return mapArchivePhotoRow(result.rows[0]);
+}
+
+async function deleteArchivePhoto(id) {
+  if (useJson) {
+    const list = readArchivePhotosJson();
+    const next = list.filter((p) => String(p.id) !== String(id));
+    if (next.length === list.length) return null;
+    const removed = list.find((p) => String(p.id) === String(id));
+    writeArchivePhotosJson(next);
+    return removed ? normalizeArchivePhoto(removed) : null;
+  }
+  const current = await getArchivePhoto(id);
+  if (!current) return null;
+  await pool.query("DELETE FROM archive_photos WHERE id = $1", [id]);
+  return current;
+}
+
 module.exports = {
   initDatabase,
   isUsingJson,
@@ -410,4 +567,8 @@ module.exports = {
   deleteNotice,
   createInquiry,
   listInquiries,
+  listArchivePhotos,
+  getArchivePhoto,
+  createArchivePhoto,
+  deleteArchivePhoto,
 };

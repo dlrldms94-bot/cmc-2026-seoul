@@ -16,6 +16,10 @@ const AdminApp = {
     document.getElementById("resetBtn").addEventListener("click", () => {
       this.resetForm();
     });
+    document.getElementById("archiveUploadForm")?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      this.uploadArchivePhotos();
+    });
 
     const me = await this.api("/api/admin/me");
     if (me?.authenticated) {
@@ -40,6 +44,7 @@ const AdminApp = {
         .slice(0, 10);
     }
     this.loadInquiries();
+    this.loadArchivePhotos();
   },
 
   setError(id, message) {
@@ -144,6 +149,120 @@ const AdminApp = {
         return;
       }
       listEl.innerHTML = `<div class="admin-empty">목록을 불러오지 못했습니다.</div>`;
+    }
+  },
+
+  setArchiveError(message) {
+    const el = document.getElementById("archiveUploadError");
+    if (!el) return;
+    if (!message) {
+      el.hidden = true;
+      el.textContent = "";
+      return;
+    }
+    el.hidden = false;
+    el.textContent = message;
+  },
+
+  async loadArchivePhotos() {
+    const listEl = document.getElementById("archivePhotoList");
+    if (!listEl) return;
+    listEl.innerHTML = `<div class="admin-empty">불러오는 중...</div>`;
+    try {
+      const res = await fetch("/api/archive/photos/admin", {
+        credentials: "same-origin",
+      });
+      if (res.status === 401) {
+        this.showLogin();
+        return;
+      }
+      const list = await res.json();
+      if (!list.length) {
+        listEl.innerHTML = `<div class="admin-empty">업로드된 사진이 없습니다.</div>`;
+        return;
+      }
+      listEl.innerHTML = list
+        .map(
+          (item) => `
+        <article class="admin-item admin-archive-item">
+          <div class="admin-archive-thumb">
+            <img src="${this.escape(item.url)}" alt="" width="72" height="72" loading="lazy" />
+          </div>
+          <div class="admin-item-main">
+            <strong>${this.escape(item.captionKo || item.filename)}</strong>
+            <div class="admin-item-meta">${this.escape(item.createdAt?.slice(0, 10) || "")}</div>
+          </div>
+          <div class="admin-item-actions">
+            <button type="button" class="admin-btn admin-btn-danger" data-archive-delete="${this.escape(item.id)}">삭제</button>
+          </div>
+        </article>`
+        )
+        .join("");
+
+      listEl.querySelectorAll("[data-archive-delete]").forEach((btn) => {
+        btn.addEventListener("click", () =>
+          this.removeArchivePhoto(btn.getAttribute("data-archive-delete"))
+        );
+      });
+    } catch {
+      listEl.innerHTML = `<div class="admin-empty">사진 목록을 불러오지 못했습니다.</div>`;
+    }
+  },
+
+  async uploadArchivePhotos() {
+    this.setArchiveError("");
+    const input = document.getElementById("archivePhotos");
+    const files = input?.files ? [...input.files] : [];
+    if (!files.length) {
+      this.setArchiveError("업로드할 사진을 선택해 주세요.");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("captionKo", document.getElementById("archiveCaptionKo")?.value || "");
+    formData.append("captionEn", document.getElementById("archiveCaptionEn")?.value || "");
+    files.forEach((file) => formData.append("photos", file));
+
+    const btn = document.getElementById("archiveUploadBtn");
+    btn.disabled = true;
+    try {
+      const res = await fetch("/api/archive/photos", {
+        method: "POST",
+        credentials: "same-origin",
+        body: formData,
+      });
+      let data = null;
+      try {
+        data = await res.json();
+      } catch {
+        data = null;
+      }
+      if (!res.ok) {
+        if (res.status === 401) {
+          this.showLogin();
+          return;
+        }
+        throw new Error(data?.error || "Upload failed");
+      }
+      document.getElementById("archiveUploadForm").reset();
+      await this.loadArchivePhotos();
+    } catch (err) {
+      this.setArchiveError(err.message || "업로드에 실패했습니다.");
+    } finally {
+      btn.disabled = false;
+    }
+  },
+
+  async removeArchivePhoto(id) {
+    if (!confirm("이 사진을 삭제할까요?")) return;
+    try {
+      await this.api(`/api/archive/photos/${id}`, { method: "DELETE" });
+      await this.loadArchivePhotos();
+    } catch (err) {
+      if (err.status === 401) {
+        this.showLogin();
+        return;
+      }
+      alert("삭제에 실패했습니다.");
     }
   },
 
