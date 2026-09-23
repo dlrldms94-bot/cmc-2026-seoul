@@ -107,7 +107,6 @@ body.page-archive:not(.is-archive-open) .site-header {
 .archive-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px 80px;
 }
 
 .archive-grid {
