@@ -178,6 +178,8 @@ body.page-archive:not(.is-archive-open) .site-header {
   background: rgba(0, 20, 40, 0.82);
 }
 
+.archive-gate[hidden],
+#archiveApp[hidden],
 .archive-lightbox[hidden] {
   display: none !important;
 }
