@@ -233,10 +233,46 @@ body.page-archive:not(.is-archive-open) .site-header {
   align-self: center;
 }
 
+.archive-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  margin-top: -22px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.archive-lightbox-nav:hover:not(:disabled),
+.archive-lightbox-nav:focus-visible:not(:disabled) {
+  background: rgba(255, 255, 255, 0.32);
+}
+
+.archive-lightbox-nav:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}
+
+.archive-lightbox-prev {
+  left: -56px;
+}
+
+.archive-lightbox-next {
+  right: -56px;
+}
+
 .archive-lightbox-close {
   position: absolute;
   top: -44px;
   right: 0;
+  z-index: 2;
   width: 36px;
   height: 36px;
   border: 0;
@@ -245,6 +281,20 @@ body.page-archive:not(.is-archive-open) .site-header {
   color: #fff;
   font-size: 22px;
   line-height: 1;
+}
+
+@media (max-width: 860px) {
+  .archive-lightbox-prev {
+    left: 8px;
+  }
+
+  .archive-lightbox-next {
+    right: 8px;
+  }
+
+  .archive-lightbox-nav {
+    background: rgba(0, 20, 40, 0.45);
+  }
 }
 
 body.archive-lightbox-open {

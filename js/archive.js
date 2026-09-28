@@ -20,7 +20,19 @@ const ArchivePage = {
       if (e.target === lightbox) this.closeLightbox();
     });
     document.addEventListener("keydown", (e) => {
+      const lightbox = document.getElementById("archiveLightbox");
+      if (lightbox?.hidden) return;
       if (e.key === "Escape") this.closeLightbox();
+      if (e.key === "ArrowLeft") this.showLightboxPhoto(this.lightboxIndex - 1);
+      if (e.key === "ArrowRight") this.showLightboxPhoto(this.lightboxIndex + 1);
+    });
+    document.getElementById("archiveLightboxPrev")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.showLightboxPhoto(this.lightboxIndex - 1);
+    });
+    document.getElementById("archiveLightboxNext")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.showLightboxPhoto(this.lightboxIndex + 1);
     });
     document.getElementById("archiveLightboxDownload")?.addEventListener("click", () => {
       if (this.lightboxIndex !== null) {
@@ -187,17 +199,33 @@ const ArchivePage = {
   },
 
   openLightbox(index) {
+    if (!this.photos[index]) return;
+    document.getElementById("archiveLightbox").hidden = false;
+    document.body.classList.add("archive-lightbox-open");
+    this.showLightboxPhoto(index);
+  },
+
+  showLightboxPhoto(index) {
+    if (index < 0 || index >= this.photos.length) return;
     const item = this.photos[index];
     if (!item) return;
+
     this.lightboxIndex = index;
-    const lightbox = document.getElementById("archiveLightbox");
     const img = document.getElementById("archiveLightboxImg");
     const cap = document.getElementById("archiveLightboxCaption");
+    const prevBtn = document.getElementById("archiveLightboxPrev");
+    const nextBtn = document.getElementById("archiveLightboxNext");
+
     img.src = item.url;
     img.alt = this.caption(item);
     cap.textContent = this.caption(item);
-    lightbox.hidden = false;
-    document.body.classList.add("archive-lightbox-open");
+
+    if (prevBtn) {
+      prevBtn.disabled = index <= 0;
+    }
+    if (nextBtn) {
+      nextBtn.disabled = index >= this.photos.length - 1;
+    }
   },
 
   closeLightbox() {
