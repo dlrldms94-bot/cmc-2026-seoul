@@ -174,7 +174,48 @@
         </section>
 
         <section class="archive-content page-content" aria-label="Archive gallery">
-          <div class="archive-grid" id="archiveGrid"></div>
+          <div class="archive-toolbar">
+            <a
+              class="archive-drive-btn"
+              href="https://drive.google.com/drive/folders/1WOLgPY_XZ-Nty6A5pbc8nbJcU1xdLVMc"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-i18n="archive.driveDownload"
+              >Google Drive에서 다운로드</a
+            >
+          </div>
+          <div class="archive-tabs" role="tablist" aria-label="Archive days">
+            <button
+              type="button"
+              class="archive-tab is-active"
+              role="tab"
+              id="tab-archive-day1"
+              aria-selected="true"
+              aria-controls="archive-panel-day1"
+              data-day="day1"
+              data-i18n="archive.tab.day1"
+            >
+              DAY1
+            </button>
+            <button
+              type="button"
+              class="archive-tab"
+              role="tab"
+              id="tab-archive-day2"
+              aria-selected="false"
+              aria-controls="archive-panel-day2"
+              data-day="day2"
+              data-i18n="archive.tab.day2"
+            >
+              DAY2
+            </button>
+          </div>
+          <div
+            class="archive-grid"
+            id="archiveGrid"
+            role="tabpanel"
+            aria-labelledby="tab-archive-day1"
+          ></div>
           <p class="archive-empty" id="archiveEmpty" hidden data-i18n="archive.empty">
             등록된 사진이 없습니다.
           </p>
@@ -213,14 +254,6 @@
         <img id="archiveLightboxImg" alt="" />
         <div class="archive-lightbox-foot">
           <p class="archive-lightbox-caption" id="archiveLightboxCaption"></p>
-          <button
-            type="button"
-            class="archive-download-btn"
-            id="archiveLightboxDownload"
-            data-i18n="archive.download"
-          >
-            다운로드
-          </button>
         </div>
       </div>
     </div>
@@ -272,6 +305,6 @@
 
     <script src="../js/i18n.js"></script>
     <script src="../js/common.js"></script>
-    <script src="../js/archive.js"></script>
+    <script src="../js/archive.js?v=2"></script>
   </body>
 </html>

@@ -1,10 +1,19 @@
 const ArchivePage = {
-  photos: [],
+  allPhotos: [],
+  activeDay: "day1",
   lightboxIndex: null,
+  photoBlobUrls: new Map(),
+
+  get visiblePhotos() {
+    return this.allPhotos.filter((item) => item.day === this.activeDay);
+  },
 
   async init() {
-    const gate = document.getElementById("archiveGate");
-    const app = document.getElementById("archiveApp");
+    if (window.location.protocol === "file:") {
+      this.showFileProtocolHint();
+      return;
+    }
+
     const form = document.getElementById("archiveLoginForm");
     const logoutBtn = document.getElementById("archiveLogoutBtn");
     const lightbox = document.getElementById("archiveLightbox");
@@ -20,8 +29,8 @@ const ArchivePage = {
       if (e.target === lightbox) this.closeLightbox();
     });
     document.addEventListener("keydown", (e) => {
-      const lightbox = document.getElementById("archiveLightbox");
-      if (lightbox?.hidden) return;
+      const box = document.getElementById("archiveLightbox");
+      if (box?.hidden) return;
       if (e.key === "Escape") this.closeLightbox();
       if (e.key === "ArrowLeft") this.showLightboxPhoto(this.lightboxIndex - 1);
       if (e.key === "ArrowRight") this.showLightboxPhoto(this.lightboxIndex + 1);
@@ -34,10 +43,11 @@ const ArchivePage = {
       e.stopPropagation();
       this.showLightboxPhoto(this.lightboxIndex + 1);
     });
-    document.getElementById("archiveLightboxDownload")?.addEventListener("click", () => {
-      if (this.lightboxIndex !== null) {
-        this.downloadPhoto(this.photos[this.lightboxIndex]);
-      }
+
+    document.querySelectorAll(".archive-tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        this.setActiveDay(tab.getAttribute("data-day"));
+      });
     });
 
     try {
@@ -63,6 +73,34 @@ const ArchivePage = {
     document.getElementById("archiveGate").hidden = false;
     document.getElementById("archiveApp").hidden = true;
     document.body.classList.remove("is-archive-open");
+  },
+
+  showFileProtocolHint() {
+    this.showGate();
+    const hint = document.querySelector(".archive-gate-hint");
+    const form = document.getElementById("archiveLoginForm");
+    if (form) form.hidden = true;
+    if (hint) {
+      hint.textContent =
+        "아카이브는 로컬 서버에서만 동작합니다. 터미널에서 npm run dev:local 실행 후 반드시 http://localhost:3000/archive/ 주소로 접속하세요. (파일 더블클릭·Live Server·127.0.0.1 은 안 됩니다)";
+    }
+  },
+
+  setActiveDay(day) {
+    this.activeDay = day === "day2" ? "day2" : "day1";
+    document.querySelectorAll(".archive-tab").forEach((tab) => {
+      const on = tab.getAttribute("data-day") === this.activeDay;
+      tab.classList.toggle("is-active", on);
+      tab.setAttribute("aria-selected", String(on));
+    });
+    const grid = document.getElementById("archiveGrid");
+    const activeTab = document.getElementById(
+      this.activeDay === "day2" ? "tab-archive-day2" : "tab-archive-day1"
+    );
+    if (grid && activeTab) {
+      grid.setAttribute("aria-labelledby", activeTab.id);
+    }
+    void this.renderGrid();
   },
 
   async api(url, options = {}) {
@@ -128,12 +166,32 @@ const ArchivePage = {
     } catch {
       /* ignore */
     }
+    this.revokeBlobUrls();
     this.showGate();
+    this.allPhotos = [];
     document.getElementById("archiveGrid").innerHTML = "";
   },
 
-  t(key, fallback) {
-    return typeof Locale !== "undefined" ? Locale.t(key) : fallback;
+  revokeBlobUrls() {
+    for (const url of this.photoBlobUrls.values()) {
+      URL.revokeObjectURL(url);
+    }
+    this.photoBlobUrls.clear();
+  },
+
+  async ensureBlobUrl(item) {
+    if (!item?.id) return "";
+    const cached = this.photoBlobUrls.get(item.id);
+    if (cached) return cached;
+
+    const res = await fetch(item.url, { credentials: "same-origin" });
+    if (!res.ok) {
+      throw new Error(`photo ${res.status}`);
+    }
+    const blob = await res.blob();
+    const objectUrl = URL.createObjectURL(blob);
+    this.photoBlobUrls.set(item.id, objectUrl);
+    return objectUrl;
   },
 
   caption(item) {
@@ -144,53 +202,26 @@ const ArchivePage = {
   },
 
   async loadGallery() {
-    const grid = document.getElementById("archiveGrid");
     const empty = document.getElementById("archiveEmpty");
-    if (!grid) return;
-
-    grid.innerHTML = "";
-    empty.hidden = true;
-
     try {
-      this.photos = await this.api("/api/archive/photos");
-      if (!this.photos.length) {
-        empty.hidden = false;
+      this.revokeBlobUrls();
+      this.allPhotos = await this.api("/api/archive/photos");
+      if (!Array.isArray(this.allPhotos)) {
+        throw new Error("invalid response");
+      }
+      this.allPhotos = this.allPhotos.map((item) => ({
+        ...item,
+        day: item.day === "day2" ? "day2" : "day1",
+      }));
+      await this.renderGrid();
+    } catch (err) {
+      empty.hidden = false;
+      if (err?.status === 401) {
+        empty.textContent =
+          "로그인이 만료되었습니다. 나갔다가 비밀번호로 다시 입장해 주세요.";
+        this.showGate();
         return;
       }
-      grid.innerHTML = this.photos
-        .map(
-          (item, index) => `
-        <article class="archive-card">
-          <button type="button" class="archive-item" data-index="${index}">
-            <img src="${this.escapeAttr(item.url)}" alt="${this.escapeAttr(this.caption(item))}" loading="lazy" width="400" height="300" />
-            ${
-              this.caption(item)
-                ? `<span class="archive-item-caption">${this.escapeHtml(this.caption(item))}</span>`
-                : ""
-            }
-          </button>
-          <button
-            type="button"
-            class="archive-download-btn archive-download-btn--card"
-            data-download="${index}"
-          >${this.escapeHtml(this.t("archive.download", "다운로드"))}</button>
-        </article>`
-        )
-        .join("");
-
-      grid.querySelectorAll(".archive-item").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          this.openLightbox(Number(btn.dataset.index));
-        });
-      });
-      grid.querySelectorAll("[data-download]").forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          this.downloadPhoto(this.photos[Number(btn.dataset.download)]);
-        });
-      });
-    } catch {
-      empty.hidden = false;
       empty.textContent =
         typeof Locale !== "undefined"
           ? Locale.t("archive.loadError")
@@ -198,16 +229,82 @@ const ArchivePage = {
     }
   },
 
-  openLightbox(index) {
-    if (!this.photos[index]) return;
-    document.getElementById("archiveLightbox").hidden = false;
-    document.body.classList.add("archive-lightbox-open");
-    this.showLightboxPhoto(index);
+  emptyMessage() {
+    const dayLabel = this.activeDay === "day2" ? "DAY2" : "DAY1";
+    const base =
+      typeof Locale !== "undefined"
+        ? Locale.t("archive.empty")
+        : "등록된 사진이 없습니다.";
+    if (this.allPhotos.length) {
+      return `${dayLabel}에 등록된 사진이 없습니다. 다른 탭을 확인해 주세요.`;
+    }
+    return base;
   },
 
-  showLightboxPhoto(index) {
-    if (index < 0 || index >= this.photos.length) return;
-    const item = this.photos[index];
+  async renderGrid() {
+    const grid = document.getElementById("archiveGrid");
+    const empty = document.getElementById("archiveEmpty");
+    if (!grid) return;
+
+    const photos = this.visiblePhotos;
+    grid.innerHTML = "";
+    empty.hidden = true;
+
+    if (!photos.length) {
+      empty.hidden = false;
+      empty.textContent = this.emptyMessage();
+      return;
+    }
+
+    grid.innerHTML = photos
+      .map(
+        (item, index) => `
+        <article class="archive-card">
+          <button type="button" class="archive-item" data-index="${index}">
+            <img class="archive-item-img is-loading" data-photo-id="${this.escapeAttr(item.id)}" alt="${this.escapeAttr(this.caption(item))}" width="400" height="300" />
+            ${
+              this.caption(item)
+                ? `<span class="archive-item-caption">${this.escapeHtml(this.caption(item))}</span>`
+                : ""
+            }
+          </button>
+        </article>`
+      )
+      .join("");
+
+    grid.querySelectorAll(".archive-item").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        this.openLightbox(Number(btn.dataset.index));
+      });
+    });
+
+    await Promise.all(
+      [...grid.querySelectorAll("img[data-photo-id]")].map(async (img) => {
+        const id = img.getAttribute("data-photo-id");
+        const item = photos.find((p) => p.id === id);
+        if (!item) return;
+        try {
+          img.src = await this.ensureBlobUrl(item);
+          img.classList.remove("is-loading");
+        } catch {
+          img.classList.add("is-error");
+          img.alt = "사진을 불러오지 못했습니다";
+        }
+      })
+    );
+  },
+
+  openLightbox(index) {
+    if (!this.visiblePhotos[index]) return;
+    document.getElementById("archiveLightbox").hidden = false;
+    document.body.classList.add("archive-lightbox-open");
+    void this.showLightboxPhoto(index);
+  },
+
+  async showLightboxPhoto(index) {
+    const photos = this.visiblePhotos;
+    if (index < 0 || index >= photos.length) return;
+    const item = photos[index];
     if (!item) return;
 
     this.lightboxIndex = index;
@@ -216,7 +313,8 @@ const ArchivePage = {
     const prevBtn = document.getElementById("archiveLightboxPrev");
     const nextBtn = document.getElementById("archiveLightboxNext");
 
-    img.src = item.url;
+    img.classList.add("is-loading");
+    img.removeAttribute("src");
     img.alt = this.caption(item);
     cap.textContent = this.caption(item);
 
@@ -224,7 +322,15 @@ const ArchivePage = {
       prevBtn.disabled = index <= 0;
     }
     if (nextBtn) {
-      nextBtn.disabled = index >= this.photos.length - 1;
+      nextBtn.disabled = index >= photos.length - 1;
+    }
+
+    try {
+      img.src = await this.ensureBlobUrl(item);
+      img.classList.remove("is-loading");
+    } catch {
+      img.classList.add("is-error");
+      cap.textContent = "사진을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.";
     }
   },
 
@@ -235,35 +341,6 @@ const ArchivePage = {
     this.lightboxIndex = null;
     document.getElementById("archiveLightboxImg").removeAttribute("src");
     document.body.classList.remove("archive-lightbox-open");
-  },
-
-  downloadFilename(item) {
-    const base = String(item.filename || "photo").trim() || "photo";
-    return base.includes(".") ? base : `${base}.jpg`;
-  },
-
-  async downloadPhoto(item) {
-    if (!item?.url) return;
-    try {
-      const res = await fetch(item.url, { credentials: "same-origin" });
-      if (!res.ok) throw new Error("Download failed");
-      const blob = await res.blob();
-      const objectUrl = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = objectUrl;
-      link.download = this.downloadFilename(item);
-      link.rel = "noopener";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(objectUrl);
-    } catch {
-      window.alert(
-        typeof Locale !== "undefined"
-          ? Locale.t("archive.downloadError")
-          : "다운로드에 실패했습니다."
-      );
-    }
   },
 
   escapeHtml(value) {
@@ -287,11 +364,8 @@ if (typeof Locale !== "undefined") {
   const originalApply = Locale.apply.bind(Locale);
   Locale.apply = function applyWithArchive() {
     originalApply();
-    if (
-      !document.getElementById("archiveApp")?.hidden &&
-      ArchivePage.photos?.length
-    ) {
-      ArchivePage.loadGallery();
+    if (!document.getElementById("archiveApp")?.hidden) {
+      void ArchivePage.renderGrid();
     }
   };
 }

@@ -190,7 +190,7 @@ const AdminApp = {
           </div>
           <div class="admin-item-main">
             <strong>${this.escape(item.captionKo || item.filename)}</strong>
-            <div class="admin-item-meta">${this.escape(item.createdAt?.slice(0, 10) || "")}</div>
+            <div class="admin-item-meta">${this.escape(item.day === "day2" ? "DAY2" : "DAY1")} · ${this.escape(item.createdAt?.slice(0, 10) || "")}</div>
           </div>
           <div class="admin-item-actions">
             <button type="button" class="admin-btn admin-btn-danger" data-archive-delete="${this.escape(item.id)}">삭제</button>
@@ -218,6 +218,7 @@ const AdminApp = {
       return;
     }
     const formData = new FormData();
+    formData.append("day", document.getElementById("archiveDay")?.value || "day1");
     formData.append("captionKo", document.getElementById("archiveCaptionKo")?.value || "");
     formData.append("captionEn", document.getElementById("archiveCaptionEn")?.value || "");
     files.forEach((file) => formData.append("photos", file));

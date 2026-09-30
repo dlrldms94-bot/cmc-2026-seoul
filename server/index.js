@@ -249,6 +249,8 @@ app.post(
     }
     const captionKo = String(req.body?.captionKo || "").trim();
     const captionEn = String(req.body?.captionEn || "").trim();
+    const dayRaw = String(req.body?.day || "day1").trim().toLowerCase();
+    const day = dayRaw === "day2" ? "day2" : "day1";
     const created = [];
     for (const file of files) {
       const ext = path.extname(file.originalname || "").toLowerCase();
@@ -262,6 +264,7 @@ app.post(
         captionEn: captionEn || captionKo,
         mimeType: file.mimetype || "image/jpeg",
         fileData: file.buffer,
+        day,
       });
       created.push(...mapArchivePhotoUrls([item]));
     }
@@ -416,7 +419,13 @@ app.delete(
   })
 );
 
-app.use(express.static(ROOT));
+function sendArchivePage(_req, res) {
+  res.sendFile(path.join(ROOT, "archive", "index.html"));
+}
+
+app.get(["/archive", "/archive/"], sendArchivePage);
+
+app.use(express.static(ROOT, { index: ["index.html"] }));
 
 app.get("*", (req, res) => {
   if (req.path.startsWith("/api/")) {
@@ -444,8 +453,10 @@ app.use((err, _req, res, _next) => {
 async function start() {
   await db.initDatabase();
   app.listen(PORT, () => {
-    console.log(`CMC server running on http://localhost:${PORT}`);
-    console.log(`Admin: http://localhost:${PORT}/admin/`);
+    const base = `http://localhost:${PORT}`;
+    console.log(`CMC server running on ${base}`);
+    console.log(`Archive: ${base}/archive/`);
+    console.log(`Admin: ${base}/admin/`);
     console.log(`DB mode: ${db.isUsingJson() ? "json" : "postgresql"}`);
   });
 }

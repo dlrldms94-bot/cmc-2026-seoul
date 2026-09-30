@@ -6,7 +6,8 @@
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
-    "dev": "node server/index.js"
+    "dev": "node server/index.js",
+    "dev:local": "DATABASE_URL= node server/index.js"
   },
   "engines": {
     "node": ">=18"

@@ -128,13 +128,20 @@ async function seedNoticesIfEmpty() {
   console.log("[db] 초기 공지 시드 완료");
 }
 
+function enableJsonMode(reason) {
+  useJson = true;
+  ensureDataFile();
+  ensureArchivePhotosFile();
+  console.log(`[db] JSON 파일 모드${reason ? ` (${reason})` : ""}`);
+  console.log("[db]   공지: data/notices.json");
+  console.log("[db]   아카이브: data/archive-photos.json");
+}
+
 async function initDatabase() {
   const databaseUrl = process.env.DATABASE_URL;
 
   if (!databaseUrl) {
-    useJson = true;
-    ensureDataFile();
-    console.log("[db] DATABASE_URL 없음 — JSON 파일 모드");
+    enableJsonMode("DATABASE_URL 없음");
     return;
   }
 
@@ -146,6 +153,7 @@ async function initDatabase() {
         : false,
   });
 
+  try {
   await pool.query(`
     CREATE TABLE IF NOT EXISTS notices (
       id SERIAL PRIMARY KEY,
@@ -192,9 +200,26 @@ async function initDatabase() {
     ALTER TABLE archive_photos
     ADD COLUMN IF NOT EXISTS file_data BYTEA
   `);
+  await pool.query(`
+    ALTER TABLE archive_photos
+    ADD COLUMN IF NOT EXISTS day TEXT NOT NULL DEFAULT 'day1'
+  `);
 
   await seedNoticesIfEmpty();
   console.log("[db] PostgreSQL 연결 완료");
+  } catch (err) {
+    console.warn(
+      "[db] PostgreSQL 연결 실패 — JSON 파일 모드로 전환:",
+      err?.message || err
+    );
+    try {
+      await pool.end();
+    } catch {
+      /* ignore */
+    }
+    pool = null;
+    enableJsonMode("로컬/오프라인 개발");
+  }
 }
 
 function isUsingJson() {
@@ -452,6 +477,10 @@ function writeArchivePhotosJson(list) {
   fs.writeFileSync(ARCHIVE_PHOTOS_FILE, JSON.stringify(list, null, 2), "utf8");
 }
 
+function normalizeArchiveDay(value) {
+  return String(value || "").trim().toLowerCase() === "day2" ? "day2" : "day1";
+}
+
 function normalizeArchivePhoto(item) {
   return {
     id: String(item.id),
@@ -459,6 +488,7 @@ function normalizeArchivePhoto(item) {
     captionKo: String(item.captionKo || item.caption_ko || "").trim(),
     captionEn: String(item.captionEn || item.caption_en || "").trim(),
     sortOrder: Number(item.sortOrder ?? item.sort_order ?? 0) || 0,
+    day: normalizeArchiveDay(item.day),
     createdAt: formatIso(item.createdAt || item.created_at),
   };
 }
@@ -470,6 +500,7 @@ function mapArchivePhotoRow(row) {
     captionKo: row.caption_ko,
     captionEn: row.caption_en,
     sortOrder: row.sort_order,
+    day: row.day,
     createdAt: row.created_at,
   });
 }
@@ -486,7 +517,7 @@ async function listArchivePhotos() {
     return sortArchivePhotos(readArchivePhotosJson().map(normalizeArchivePhoto));
   }
   const result = await pool.query(
-    `SELECT id, filename, caption_ko, caption_en, sort_order, mime_type, created_at
+    `SELECT id, filename, caption_ko, caption_en, sort_order, day, mime_type, created_at
      FROM archive_photos ORDER BY sort_order ASC, id DESC`
   );
   return sortArchivePhotos(result.rows.map(mapArchivePhotoRow));
@@ -526,6 +557,7 @@ async function createArchivePhoto(payload) {
   const captionEn = String(payload.captionEn || "").trim() || captionKo;
   const mimeType = String(payload.mimeType || "image/jpeg").trim() || "image/jpeg";
   const fileData = payload.fileData ? Buffer.from(payload.fileData) : null;
+  const day = normalizeArchiveDay(payload.day);
   const sortOrder =
     payload.sortOrder !== undefined
       ? Number(payload.sortOrder) || 0
@@ -541,6 +573,7 @@ async function createArchivePhoto(payload) {
       captionEn,
       sortOrder,
       mimeType,
+      day,
       fileDataBase64: fileData ? fileData.toString("base64") : "",
       createdAt: now,
     };
@@ -551,10 +584,10 @@ async function createArchivePhoto(payload) {
 
   const result = await pool.query(
     `INSERT INTO archive_photos (
-      filename, caption_ko, caption_en, sort_order, mime_type, file_data, created_at
-    ) VALUES ($1, $2, $3, $4, $5, $6, NOW())
-     RETURNING id, filename, caption_ko, caption_en, sort_order, mime_type, created_at`,
-    [filename, captionKo, captionEn, sortOrder, mimeType, fileData]
+      filename, caption_ko, caption_en, sort_order, day, mime_type, file_data, created_at
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+     RETURNING id, filename, caption_ko, caption_en, sort_order, day, mime_type, created_at`,
+    [filename, captionKo, captionEn, sortOrder, day, mimeType, fileData]
   );
   return mapArchivePhotoRow(result.rows[0]);
 }
